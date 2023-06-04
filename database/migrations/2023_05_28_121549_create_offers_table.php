@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Company;
+use App\Models\Tag;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,7 +26,8 @@ return new class extends Migration
             $table->timestamp('expire_date')->nullable();
             $table->string('currency')->nullable();
             $table->foreignIdFor(Company::class, "company_id");
-            $table->text('tags')->nullable();
+            // $table->foreignIdFor(Tag::class);
+            // $table->text('tags')->nullable();
 
             $table->timestamps();
         });

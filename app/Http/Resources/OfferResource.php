@@ -25,7 +25,8 @@ class OfferResource extends JsonResource
             'expire_date' => $this->expire_date,
             'bracket_low' => $this->bracket_low,
             'bracket_high' => $this->bracket_high,
-            'tags' => []
+            'currency' => $this->currency,
+            'tags' => $this->tags
 
 
         ];

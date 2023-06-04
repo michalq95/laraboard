@@ -20,10 +20,12 @@ class CompanyResource extends JsonResource
             'slug' => $this->slug,
             'status' => $this->id !== 'deactivated',
             'description' => $this->description,
-            'locale' => $this->locale,
+            'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'offers' => []
+            'loc_x' => $this->loc_x,
+            'loc_y' => $this->loc_y,
+            'offers' => $this->offers
         ];
     }
 }

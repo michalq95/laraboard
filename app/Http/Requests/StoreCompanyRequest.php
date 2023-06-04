@@ -33,7 +33,11 @@ class StoreCompanyRequest extends FormRequest
             'user_id' => 'exists:users,id',
             'status' => 'required|boolean',
             'description' => 'nullable|string',
-            'locale' => 'nullable|string',
+            'address' => 'nullable|string',
+            'loc_x' => 'nullable|numeric',
+            'loc_y' => 'nullable|numeric',
+            "image" => 'nullable|string'
+
         ];
     }
 }

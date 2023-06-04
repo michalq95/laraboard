@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post("/logout", [AuthController::class, 'logout']);
     Route::resource("/offer", OfferController::class);
     Route::resource("/company", CompanyController::class);
+    Route::get("/company/{companyId}/offer", [OfferController::class, 'getCompanyOffers']);
 });
 
 Route::post("/register", [AuthController::class, 'register']);

@@ -36,8 +36,9 @@ class StoreOfferRequest extends FormRequest
             'company_id' => 'exists:companies,id',
             'status' => 'required',
             'description' => 'string',
-            'bracket_low' => 'integer',
-            'bracket_high' => 'integer',
+            'bracket_low' => 'integer|required_with:bracket_high',
+            'bracket_high' => 'integer|required_with:bracket_low|gte:bracket_low',
+            'currency' => 'string|required_with:bracket_low',
             'expire_date' => 'nullable|date',
             'tags' => "nullable|string"
         ];

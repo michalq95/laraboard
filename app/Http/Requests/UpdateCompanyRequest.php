@@ -13,7 +13,11 @@ class UpdateCompanyRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        $company = $this->route('company');
+        if ($this->user()->id !== $company->user_id) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -24,7 +28,14 @@ class UpdateCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            // 'user_id' => 'exists:users,id',
+            'status' => 'required|boolean',
+            'description' => 'nullable|string',
+            'address' => 'nullable|string',
+            'loc_x' => 'nullable|numeric',
+            'loc_y' => 'nullable|numeric',
+            "image" => 'nullable|string'
         ];
     }
 }

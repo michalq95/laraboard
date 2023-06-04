@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Offer;
-use App\Models\OfferTag;
+use App\Models\Tag;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +15,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->id();
-            $table->string("name", 255);
-            // $table->foreignIdFor(Offer::class);
+        Schema::create('offer_tag', function (Blueprint $table) {
+            $table->foreignIdFor(Tag::class, "tag_id")->onDelete("cascade");
+            $table->foreignIdFor(Offer::class, "offer_id")->onDelete("cascade");
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('offer_tag');
     }
 };

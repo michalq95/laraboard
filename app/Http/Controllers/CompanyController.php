@@ -6,7 +6,10 @@ use App\Models\Company;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
@@ -29,8 +32,16 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
-        $result = Company::create($request->validated());
-        return new CompanyResource($result);
+        // $result = Company::create($request->validated());
+        $data = $request->validated();
+        if (isset($data['image'])) {
+            $relativePath = $this->saveImage($data['image']);
+            $data['image'] = $relativePath;
+        }
+
+        $company = Company::create($data);
+
+        return new CompanyResource($company);
     }
 
     /**
@@ -57,7 +68,19 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company)
     {
-        $company->update($request->validated());
+        // $company->update($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['image'])) {
+            $relativePath = $this->saveImage($data['image']);
+            $data['image'] = $relativePath;
+        }
+        if ($company->image) {
+            $absolutePath = public_path($company->image);
+            File::delete($absolutePath);
+        }
+        $company->update($data);
+
         return new CompanyResource($company);
     }
 
@@ -75,5 +98,33 @@ class CompanyController extends Controller
         }
         $company->delete();
         return response("", 204);
+    }
+
+
+    private function saveImage($image)
+    {
+        if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
+            $image = substr($image, strpos($image, ',') + 1);
+            $type = strtolower($type[1]);
+            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                throw new \Exception('unsupported image data');
+            }
+            $image = str_replace(' ', '+', $image);
+            $image = base64_decode($image);
+            if (!$image) {
+                throw new \Exception('unsupported image data');
+            }
+        } else {
+            throw new \Exception('unsupported image data');
+        }
+        $dir = 'images/';
+        $file = Str::random() . '.' . $type;
+        $absolutePath = public_path($dir);
+        $relativePath = $dir . $file;
+        if (!File::exists($absolutePath)) {
+            File::makeDirectory($absolutePath, 0755, true);
+        }
+        file_put_contents($relativePath, $image);
+        return $relativePath;
     }
 }

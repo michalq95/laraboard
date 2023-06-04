@@ -16,6 +16,11 @@ class Company extends Model
         return $this->hasOne(User::class);
     }
 
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
@@ -27,6 +32,9 @@ class Company extends Model
         'slug',
         'status',
         'description',
-        'locale'
+        'address',
+        'loc_x',
+        'loc_y',
+        'image'
     ];
 }

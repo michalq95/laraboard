@@ -21,7 +21,10 @@ return new class extends Migration
             $table->string("slug", 255);
             $table->integer("status");
             $table->text("description", 2000)->nullable();
-            $table->string("locale", 255)->nullable();
+            $table->string("address", 255)->nullable();
+            $table->float("loc_x", 9, 6)->nullable();
+            $table->float("loc_y", 9, 6)->nullable();
+            $table->string("image", 255)->nullable();
 
             $table->timestamps();
             // $table->timestamp('expire_date')->nullable();
