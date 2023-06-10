@@ -1,64 +1,6 @@
 import { createStore } from "vuex";
 import axiosClient from "../axios";
 
-const tmpCompanies = [
-  {
-    id: 1,
-    name: "Microsoft",
-    slug: "microsoft",
-    status: "active",
-    description: "microsoft that one big company",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Microsoft_icon.svg/240px-Microsoft_icon.svg.png",
-    created_at: "2023-05-27 18:00:00",
-    updated_at: "2023-05-27 18:00:00",
-    address: null,
-    offers: [],
-  },
-  {
-    id: 2,
-    name: "Apple Company",
-    slug: "apple-company",
-    status: "active",
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/195px-Apple_logo_black.svg.png",
-    description: "apple that one big company",
-    created_at: "2023-05-27 18:00:00",
-    updated_at: "2023-05-27 18:00:00",
-
-    address: null,
-    offers: [],
-  },
-];
-const tmpOffers = [
-  {
-    id: 1,
-    title: "Front end",
-    slug: "645767575675676575324-front-end-microsoft",
-    description: "front end developer in microsoft",
-    status: "active",
-    bracket_low: 3000,
-    bracket_high: 5000,
-    image: "",
-    created_at: "2023-05-27 18:00:00",
-    updated_at: "2023-05-27 18:00:00",
-    tags: ["Back end", "Laravel", "Mid"],
-  },
-  {
-    id: 2,
-    title: "Back end",
-    slug: "54325423645654653654-back-end-apple",
-    description: "front end developer in apple",
-    status: "active",
-    image: "",
-    bracket_low: 10000,
-    bracket_high: 15000,
-    created_at: "2023-05-27 18:00:00",
-    updated_at: "2023-05-27 18:00:00",
-    tags: ["Back end", "Laravel", "Mid"],
-  },
-];
-
 const tmpTags = [
   "Back end",
   "Laravel",
@@ -77,31 +19,106 @@ const store = createStore({
       data: {},
       token: sessionStorage.getItem("TOKEN"),
     },
-    offers: [...tmpOffers],
-    companies: [...tmpCompanies],
+    currentCompany: { loading: false, data: {} },
+    currentOffer: { loading: false, data: {} },
+    offers: { loading: false, data: [], links: [] },
+    companies: { loading: false, data: [], links: [] },
+    userOffers: { loading: false, data: [] },
     tags: [...tmpTags],
   },
   getters: {},
   actions: {
-    saveCompany({ commit }, company) {
-      delete company.image_url;
+    getOffer({ commit }, id) {
+      commit("setCurrentOfferLoading", true);
+      return axiosClient
+        .get(`/offer/${id}`)
+        .then((res) => {
+          commit("setCurrentOffer", res.data);
+          commit("setCurrentOfferLoading", false);
+          return res;
+        })
+        .catch((err) => {
+          commit("setCurrentOfferLoading", false);
+          throw err;
+        });
+    },
+    getCompany({ commit }, id) {
+      commit("setCurrentCompanyLoading", true);
+      return axiosClient
+        .get(`/company/${id}`)
+        .then((res) => {
+          commit("setCurrentCompany", res.data);
+          commit("setCurrentCompanyLoading", false);
+          return res;
+        })
+        .catch((err) => {
+          commit("setCurrentCompanyLoading", false);
+          throw err;
+        });
+    },
+    getCompanies({ commit }) {
+      commit("setCompaniesLoading", true);
+      return axiosClient.get("/company").then((res) => {
+        commit("setCompaniesLoading", false);
+        commit("setCompanies", res.data);
+        return res;
+      });
+    },
+    saveOffer({ commit }, offer) {
+      delete offer.image_url;
       let response;
-      if (company.id) {
-        response = axiosClient
-          .put(`/company/${data.id}`, company)
-          .then((res) => {
-            this.commit("updateCompany", res.data);
-            console.log(res);
-            return res;
-          });
+      if (offer.id) {
+        console.log("put");
+        console.log(offer);
+        response = axiosClient.put(`/offer/${offer.id}`, offer).then((res) => {
+          console.log(res);
+          return res.data;
+        });
       } else {
-        response = axiosClient.post(`/company`, company).then((res) => {
-          this.commit("updateCompany", res.data);
+        response = axiosClient.post(`/offer`, offer).then((res) => {
           console.log(res.data);
           return res.data;
         });
       }
       return response;
+    },
+    saveCompany({ commit }, company) {
+      delete company.image_url;
+      let response;
+      if (company.id) {
+        response = axiosClient
+          .put(`/company/${company.id}`, company)
+          .then((res) => {
+            // this.commit("updateCompany", res.data);
+            console.log(res);
+            return res.data;
+          });
+      } else {
+        response = axiosClient.post(`/company`, company).then((res) => {
+          // this.commit("updateCompany", res.data);
+          console.log(res.data);
+          return res.data;
+        });
+      }
+      return response;
+    },
+    getOffers({ commit }, { url = null } = {}) {
+      url = url || "/offer/offers";
+      commit("setOffersLoading", true);
+      return axiosClient.get(url).then((res) => {
+        commit("setOffersLoading", false);
+        commit("setOffers", res.data);
+        return res;
+      });
+    },
+    getMyOffers({ commit }, { id }) {
+      // url = url || "/offer/offers";
+      commit("setUserOffersLoading", true);
+      return axiosClient.get(`company/${id}/offer`).then((res) => {
+        commit("setUserOffersLoading", false);
+        commit("setUserOffers", res.data);
+        return res;
+      });
     },
     register({ commit }, user) {
       return axiosClient.post("/register", user).then(({ data }) => {
@@ -111,6 +128,7 @@ const store = createStore({
     },
     login({ commit }, user) {
       return axiosClient.post("/login", user).then(({ data }) => {
+        console.log(data);
         commit("setUser", data);
         return data;
       });
@@ -133,8 +151,37 @@ const store = createStore({
       state.user.data = userData.user;
       sessionStorage.setItem("TOKEN", userData.token);
     },
-    updateCompany(state, company) {
-      state.user.data.company = company.data;
+
+    setCurrentCompanyLoading(state, status) {
+      state.currentCompany.loading = status;
+    },
+    setCompaniesLoading(state, status) {
+      state.companies.loading = status;
+    },
+    setCurrentOfferLoading(state, status) {
+      state.currentOffer.loading = status;
+    },
+    setOffersLoading(state, status) {
+      state.offers.loading = status;
+    },
+    setUserOffersLoading(state, status) {
+      state.userOffers.loading = status;
+    },
+
+    setCurrentCompany(state, data) {
+      state.currentCompany.data = data.data;
+    },
+    setCompanies(state, data) {
+      state.companies.data = data.data;
+    },
+    setCurrentOffer(state, data) {
+      state.currentOffer.data = data.data;
+    },
+    setOffers(state, data) {
+      state.offers.data = data.data;
+    },
+    setUserOffers(state, data) {
+      state.userOffers.data = data.data;
     },
   },
   modules: {},

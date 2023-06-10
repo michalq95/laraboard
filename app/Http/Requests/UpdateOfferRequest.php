@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateOfferRequest extends FormRequest
 {
@@ -13,7 +15,9 @@ class UpdateOfferRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
+        // $offer = $this->route("offer");
+        // return Gate::allows("update-offer", $offer);
     }
 
     /**
@@ -24,7 +28,15 @@ class UpdateOfferRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string|max:255',
+            'company_id' => 'exists:companies,id',
+            'status' => 'required|in:draft,active,inactive',
+            'description' => 'string',
+            'bracket_low' => 'integer|required_with:bracket_high',
+            'bracket_high' => 'integer|required_with:bracket_low|gte:bracket_low',
+            'currency' => 'string|required_with:bracket_low',
+            // 'expire_date' => 'nullable|date',
+            'tags' => "nullable|string"
         ];
     }
 }

@@ -4,6 +4,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Register from "../views/Register.vue";
 import Offers from "../views/Offers.vue";
 import OfferView from "../views/OfferView.vue";
+import OfferCreate from "../views/OfferCreate.vue";
 import Companies from "../views/Companies.vue";
 import CompanyCreate from "../views/CompanyCreate.vue";
 import CompanyView from "../views/CompanyView.vue";
@@ -44,8 +45,32 @@ const routes = [
 
       {
         path: "/offers/create",
+        name: "OfferCreateNew",
+        component: OfferCreate,
+      },
+      {
+        path: "/offers/create/:id",
         name: "OfferCreate",
-        component: OfferView,
+        component: OfferCreate,
+        // beforeEnter: async (to, from, next) => {
+        //   try {
+        //     const offer = await store.dispatch("getOffer", to.params.id);
+        //     if (
+        //       offer.data.data.company_id !== store.state.user.data.company.id
+        //     ) {
+        //       console.log(offer.data.data.id);
+
+        //       next({ name: "OfferView", params: { id: offer.data.data.id } });
+        //     } else {
+        //       console.log(offer.data.data.id);
+
+        //       next();
+        //     }
+        //   } catch (e) {
+        //     console.log(e);
+        //     next({ name: Offers });
+        //   }
+        // },
       },
       {
         path: "/offers/:id",

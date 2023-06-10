@@ -48,7 +48,7 @@ class AuthController extends Controller
             return response(['error' => 'Wrong email or password'], 422);
         }
         /** @var \App\Models\User $user **/
-        $user = Auth::user();
+        $user = Auth::user()->load("company");
         $token = $user->createToken('main')->plainTextToken;
 
         return response([

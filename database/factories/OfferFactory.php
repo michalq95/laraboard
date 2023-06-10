@@ -14,6 +14,7 @@ class OfferFactory extends Factory
 
     protected $model = Offer::class;
 
+
     /**
      * Define the model's default state.
      *
@@ -21,15 +22,18 @@ class OfferFactory extends Factory
      */
     public function definition()
     {
+
+
         return [
             'title' => $this->faker->sentence,
             'slug' => $this->faker->slug,
             'description' => $this->faker->realText,
-            'status' => 1,
+            'status' => 'active',
             'bracket_low' => $this->faker->numberBetween(3000, 5000),
             'bracket_high' => $this->faker->numberBetween(5001, 10000),
             'expire_date' => Carbon::now()->addMonth(),
             'currency' => "PLN",
+            'icon' => $this->faker->randomElement(["java", "js", "php", "python", "vue", ""]),
             'company_id' => $this->faker->numberBetween(1, 10),
 
 

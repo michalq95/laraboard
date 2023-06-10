@@ -17,11 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
     Route::post("/logout", [AuthController::class, 'logout']);
+    Route::get("/offer/offers", [OfferController::class, 'public_index']);
+
     Route::resource("/offer", OfferController::class);
     Route::resource("/company", CompanyController::class);
     Route::get("/company/{companyId}/offer", [OfferController::class, 'getCompanyOffers']);

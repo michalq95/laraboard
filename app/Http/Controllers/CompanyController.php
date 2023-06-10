@@ -52,10 +52,10 @@ class CompanyController extends Controller
      */
     public function show(Company $company, Request $request)
     {
-        $user = $request->user();
-        if ($user->id !== $company->user_id) {
-            return abort(403, "Unauthorized");
-        }
+        // $user = $request->user();
+        // if ($user->id !== $company->user_id) {
+        //     return abort(403, "Unauthorized");
+        // }
         return new CompanyResource($company);
     }
 
@@ -95,6 +95,10 @@ class CompanyController extends Controller
         $user = $request->user();
         if ($user->id !== $company->user_id) {
             return abort(403, "Unauthorized");
+        }
+        if ($company->image) {
+            $absolutePath = public_path($company->image);
+            File::delete($absolutePath);
         }
         $company->delete();
         return response("", 204);

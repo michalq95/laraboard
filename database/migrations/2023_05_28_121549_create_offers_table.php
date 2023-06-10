@@ -20,11 +20,12 @@ return new class extends Migration
             $table->string("title", 255);
             $table->string("slug", 255);
             $table->text("description", 2000);
-            $table->integer("status");
+            $table->string("status");
             $table->integer("bracket_low")->nullable();
             $table->integer("bracket_high")->nullable();
             $table->timestamp('expire_date')->nullable();
             $table->string('currency')->nullable();
+            $table->string('icon')->nullable();
             $table->foreignIdFor(Company::class, "company_id");
             // $table->foreignIdFor(Tag::class);
             // $table->text('tags')->nullable();

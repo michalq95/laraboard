@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 class CompanyResource extends JsonResource
 {
@@ -18,14 +19,15 @@ class CompanyResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'status' => $this->id !== 'deactivated',
+            'status' => $this->status,
             'description' => $this->description,
             'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'loc_x' => $this->loc_x,
             'loc_y' => $this->loc_y,
-            'offers' => $this->offers
+            'offers' => $this->offers,
+            "image_url" => $this->image ? URL::to($this->image) : null
         ];
     }
 }

@@ -7,15 +7,16 @@
         </h1>
       </div>
     </template>
+    <div v-if="companyLoading" class="flex justify-center">Loading...</div>
 
-    <div class="shadow sm:rounded-md sm:overflow-hidden">
+    <div v-else class="shadow sm:rounded-md sm:overflow-hidden">
       <div class="px-4 py-5 bg-white space-y-6">
         <div>
           <label class="block text-sm font-medium text-gray-700">Image</label>
           <div class="mt1 flex items-center">
             <img
-              v-if="model.image"
-              :src="model.image"
+              v-if="model.image_url"
+              :src="model.image_url"
               :alt="model.name"
               class="w-64 object-cover"
             />
@@ -86,7 +87,7 @@
   </PageComponent>
 </template>
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import store from "../store";
 import { useRoute } from "vue-router";
 import PageComponent from "../components/PageComponent.vue";
@@ -94,19 +95,31 @@ import PageComponent from "../components/PageComponent.vue";
 const route = useRoute();
 let model = ref({
   name: "",
-  status: "",
+  status: false,
   description: null,
-  image: "",
+  // image: "",
+  image_url: "",
   offers: [],
   address: "",
+  loc_x: null,
+  loc_y: null,
 });
 
+const companyLoading = computed(() => store.state.currentCompany.loading);
+
+watch(
+  () => store.state.currentCompany.data,
+  (newVal, oldVal) => {
+    model.value = {
+      // ...JSON.parse(JSON.stringify(newVal)),
+      ...newVal,
+      status: newVal.status !== "draft",
+    };
+  }
+);
+
 if (route.params.id) {
-  model.value = store.state.companies.find(
-    (s) => s.id === parseInt(route.params.id)
-  );
-} else {
-  model.value = { ...store.state.user.data.company };
+  store.dispatch("getCompany", route.params.id);
 }
 </script>
 <style lang=""></style>

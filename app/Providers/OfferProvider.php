@@ -45,5 +45,16 @@ class OfferProvider extends ServiceProvider
             }
             $offer->tags()->sync($tagIds);
         }));
+
+        Offer::updating(function ($offer) {
+            if (Auth::check()) {
+                $offer->expire_date = Carbon::now()->addMonth();
+                $offer->company_id = Auth::user()->company->id;
+            }
+        });
+
+        // Offer::updated(function ($offer) {
+
+        // });
     }
 }

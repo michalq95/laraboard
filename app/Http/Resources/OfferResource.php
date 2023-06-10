@@ -16,6 +16,11 @@ class OfferResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'company_id' => $this->company->id,
+            'company_name' => $this->company->name,
+            'loc_x' => $this->company->loc_x,
+            'loc_y' => $this->company->loc_y,
+
             'title' => $this->title,
             'slug' => $this->slug,
             'status' => $this->status,
@@ -26,6 +31,7 @@ class OfferResource extends JsonResource
             'bracket_low' => $this->bracket_low,
             'bracket_high' => $this->bracket_high,
             'currency' => $this->currency,
+            'icon' => $this->icon,
             'tags' => $this->tags
 
 

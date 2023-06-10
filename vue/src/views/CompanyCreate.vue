@@ -7,8 +7,9 @@
         </h1>
       </div>
     </template>
+    <div v-if="companyLoading" class="flex justify-center">Loading...</div>
 
-    <form @submit.prevent="saveCompany">
+    <form v-else @submit.prevent="saveCompany">
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <div class="px-4 py-5 bg-white space-y-6">
           <div>
@@ -118,13 +119,16 @@
           </div>
           <div class="flex items-start">
             <div class="flex items-center h-5">
-              <input
-                id="status"
+              <select
                 name="status"
-                type="checkbox"
                 v-model="model.status"
-                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-              />
+                id="status"
+                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              >
+                <option selected value="draft">draft</option>
+                <option value="active">active</option>
+                <option value="inactive">inactive</option>
+              </select>
             </div>
             <div class="ml-3 text-sm">
               <label for="status" class="font-medium text-gray-700"
@@ -148,7 +152,7 @@
   </PageComponent>
 </template>
 <script setup>
-import { ref, computed } from "vue";
+import { ref, watch, computed } from "vue";
 import store from "../store";
 import { useRoute, useRouter } from "vue-router";
 import PageComponent from "../components/PageComponent.vue";
@@ -156,12 +160,16 @@ import Map from "../components/Map.vue";
 
 const router = useRouter();
 const route = useRoute();
+
+const companyLoading = computed(() => store.state.currentCompany.loading);
+
 let showMap = ref(false);
 let model = ref({
   name: "",
-  status: false,
+  status: "draft",
   description: null,
   image: "",
+  image_url: "",
   offers: [],
   address: "",
   loc_x: null,
@@ -170,12 +178,22 @@ let model = ref({
 
 function saveCompany() {
   store.dispatch("saveCompany", model.value).then((data) => {
-    console.log(data);
     router.push({
-      name: "DashboardCompany",
+      name: "Dashboard",
     });
   });
 }
+
+watch(
+  () => store.state.currentCompany.data,
+  (newVal, oldVal) => {
+    model.value = {
+      // ...JSON.parse(JSON.stringify(newVal)),
+      ...newVal,
+      status: newVal.status !== "draft",
+    };
+  }
+);
 
 function setModelPos(e) {
   model.value.loc_x = e.x;
@@ -191,9 +209,11 @@ function onImageChoose(ev) {
   };
   reader.readAsDataURL(file);
 }
-
 if (store.state.user.data.company) {
-  model.value = { ...store.state.user.data.company };
+  store.dispatch("getCompany", store.state.user.data.company.id);
 }
+// if (store.state.user.data.company) {
+//   model.value = { ...store.state.user.data.company };
+// }
 </script>
 <style lang=""></style>

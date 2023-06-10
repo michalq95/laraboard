@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreCompanyRequest extends FormRequest
 {
@@ -31,7 +32,7 @@ class StoreCompanyRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'user_id' => 'exists:users,id',
-            'status' => 'required|boolean',
+            'status' => 'required|in:draft,active,inactive',
             'description' => 'nullable|string',
             'address' => 'nullable|string',
             'loc_x' => 'nullable|numeric',

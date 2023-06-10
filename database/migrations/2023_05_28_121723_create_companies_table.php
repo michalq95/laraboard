@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, "user_id");
             $table->string("name", 255);
             $table->string("slug", 255);
-            $table->integer("status");
+            $table->string("status");
             $table->text("description", 2000)->nullable();
             $table->string("address", 255)->nullable();
             $table->float("loc_x", 9, 6)->nullable();

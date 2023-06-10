@@ -27,8 +27,9 @@ class OfferSeeder extends Seeder
             ['name' => 'SQL'],
             ['name' => 'Docker'],
             ['name' => 'Laravel'],
-
         ];
+
+
 
         foreach ($tags as $key => $value) {
             Tag::create($value);

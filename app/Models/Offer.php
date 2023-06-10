@@ -15,7 +15,7 @@ class Offer extends Model
     use HasFactory, HasSlug;
 
 
-    protected $fillable = ['title', 'company_id', 'slug', 'description', 'status', 'bracket_low', 'bracket_high', 'currency', 'expire_date',];
+    protected $fillable = ['title', 'company_id', 'slug', 'description', 'status', 'bracket_low', 'bracket_high', 'currency', 'expire_date', 'icon'];
 
     public function company(): BelongsTo
     {

@@ -24,11 +24,11 @@ class CompanyFactory extends Factory
         return [
             'name' => $this->faker->company,
             'slug' => $this->faker->slug,
-            'status' => 1,
+            'status' => 'active',
             'description' => $this->faker->sentences(5, true),
             'address' => "Warszawa",
-            'loc_y' => $this->faker->latitude(52.064, 52.365),
-            'loc_x' => $this->faker->longitude(20.82, 21.2),
+            'loc_x' => $this->faker->longitude(52.064, 52.365),
+            'loc_y' => $this->faker->latitude(20.82, 21.2),
 
         ];
     }

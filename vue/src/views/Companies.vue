@@ -6,7 +6,8 @@
         <router-link
           :to="{ name: 'CompanyCreate' }"
           class="py-3 px-2 bg-yellow-300 rounded-lg hover:bg-yellow-400"
-          >Create new company</router-link
+          ><span v-if="!store.state.user.data.company">Create new company</span
+          ><span v-else>Edit your company</span></router-link
         >
       </div>
     </template>
@@ -16,7 +17,7 @@
         :key="company.id"
         class="flex justify-between items-center py-3 px-5 shadow-md bg-blue-300 hover:bg-blue-300 h-[80px]"
       >
-        <img :src="company.image" alt="" class="w-8 object-cover" />
+        <img :src="company.image_url" alt="" class="w-8 object-cover" />
         <h4>
           <router-link
             :to="{ name: 'CompanyView', params: { id: company.id } }"
@@ -24,6 +25,14 @@
             {{ company.name }}</router-link
           >
         </h4>
+        <div v-if="company.id === userCompanyId">
+          <router-link
+            :to="{ name: 'CompanyCreate' }"
+            class="py-2 px-2 bg-blue-500 rounded-lg hover:bg-blue-400"
+            >Edit company</router-link
+          >
+        </div>
+        <div></div>
       </div>
     </div>
   </PageComponent>
@@ -32,6 +41,10 @@
 import PageComponent from "../components/PageComponent.vue";
 import store from "../store";
 import { computed } from "vue";
-const companies = computed(() => store.state.companies);
+
+const companies = computed(() => store.state.companies.data);
+const userCompanyId = computed(() => store.state.user?.data?.company?.id);
+
+store.dispatch("getCompanies");
 </script>
 <style lang=""></style>
