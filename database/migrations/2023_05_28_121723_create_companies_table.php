@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class, "user_id");
             $table->string("name", 255);
             $table->string("slug", 255);
-            $table->string("status");
+            $table->string("status", 10);
+            $table->string("email")->unique();
             $table->text("description", 2000)->nullable();
             $table->string("address", 255)->nullable();
             $table->float("loc_x", 9, 6)->nullable();

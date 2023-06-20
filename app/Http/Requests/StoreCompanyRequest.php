@@ -33,6 +33,7 @@ class StoreCompanyRequest extends FormRequest
             'name' => 'required|string|max:255',
             'user_id' => 'exists:users,id',
             'status' => 'required|in:draft,active,inactive',
+            'email' => 'required|string|email',
             'description' => 'nullable|string',
             'address' => 'nullable|string',
             'loc_x' => 'nullable|numeric',

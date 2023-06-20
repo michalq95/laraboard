@@ -29,66 +29,53 @@ const routes = [
   },
   {
     path: "/",
-    redirect: "/dashboard",
-    name: "DefaultLayout",
-    component: DefaultLayout,
-    meta: { requiresAuth: true },
-    children: [
-      { path: "/dashboard", name: "Dashboard", component: Dashboard },
-      {
-        path: "/dashboard/company",
-        name: "DashboardCompany",
-        component: CompanyView,
-      },
-      { path: "/offers", name: "Offers", component: Offers },
-      { path: "/companies", name: "Companies", component: Companies },
-
-      {
-        path: "/offers/create",
-        name: "OfferCreateNew",
-        component: OfferCreate,
-      },
-      {
-        path: "/offers/create/:id",
-        name: "OfferCreate",
-        component: OfferCreate,
-        // beforeEnter: async (to, from, next) => {
-        //   try {
-        //     const offer = await store.dispatch("getOffer", to.params.id);
-        //     if (
-        //       offer.data.data.company_id !== store.state.user.data.company.id
-        //     ) {
-        //       console.log(offer.data.data.id);
-
-        //       next({ name: "OfferView", params: { id: offer.data.data.id } });
-        //     } else {
-        //       console.log(offer.data.data.id);
-
-        //       next();
-        //     }
-        //   } catch (e) {
-        //     console.log(e);
-        //     next({ name: Offers });
-        //   }
-        // },
-      },
-      {
-        path: "/offers/:id",
-        name: "OfferView",
-        component: OfferView,
-      },
-      {
-        path: "/companies/create",
-        name: "CompanyCreate",
-        component: CompanyCreate,
-      },
-      {
-        path: "/companies/:id",
-        name: "CompanyView",
-        component: CompanyView,
-      },
-    ],
+    redirect: "/offers",
   },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/dashboard/company",
+    name: "DashboardCompany",
+    component: CompanyView,
+    meta: { requiresAuth: true },
+  },
+  { path: "/offers", name: "Offers", component: Offers },
+  { path: "/companies", name: "Companies", component: Companies },
+
+  {
+    path: "/offers/create",
+    name: "OfferCreateNew",
+    component: OfferCreate,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/offers/create/:id",
+    name: "OfferCreate",
+    component: OfferCreate,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/offers/:id",
+    name: "OfferView",
+    component: OfferView,
+  },
+  {
+    path: "/companies/create",
+    name: "CompanyCreate",
+    component: CompanyCreate,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/companies/:id",
+    name: "CompanyView",
+    component: CompanyView,
+  },
+  // ],
+  //   },
 ];
 
 const router = createRouter({

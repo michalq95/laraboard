@@ -17,16 +17,16 @@ class OfferSeeder extends Seeder
     public function run()
     {
         $tags = [
-            ['name' => 'JavaScript'],
-            ['name' => 'PHP'],
-            ['name' => 'Junior'],
-            ['name' => 'Mid'],
-            ['name' => 'Python'],
-            ['name' => 'Java'],
-            ['name' => 'Node'],
-            ['name' => 'SQL'],
-            ['name' => 'Docker'],
-            ['name' => 'Laravel'],
+            ['name' => 'JavaScript', 'accepted' => true],
+            ['name' => 'PHP', 'accepted' => true],
+            ['name' => 'Junior', 'accepted' => true],
+            ['name' => 'Mid', 'accepted' => true],
+            ['name' => 'Python', 'accepted' => true],
+            ['name' => 'Java', 'accepted' => true],
+            ['name' => 'Node', 'accepted' => true],
+            ['name' => 'SQL', 'accepted' => true],
+            ['name' => 'Docker', 'accepted' => true],
+            ['name' => 'Laravel', 'accepted' => true],
         ];
 
 

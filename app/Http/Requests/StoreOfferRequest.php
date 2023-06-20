@@ -41,6 +41,7 @@ class StoreOfferRequest extends FormRequest
             'bracket_high' => 'integer|required_with:bracket_low|gte:bracket_low',
             'currency' => 'string|required_with:bracket_low',
             'expire_date' => 'nullable|date',
+            'icon' => 'string|nullable',
             'tags' => "nullable|string"
         ];
     }

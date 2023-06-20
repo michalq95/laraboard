@@ -18,6 +18,7 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string("name", 255);
+            $table->boolean("accepted")->default(false);
             // $table->foreignIdFor(Offer::class);
         });
     }

@@ -1,2 +1,3 @@
 php artisan make:controller OfferController --model=Offer --api --requests
 php artisan db:seed --class=DatabaseSeeder
+php artisan test --env=testing

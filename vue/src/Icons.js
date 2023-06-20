@@ -28,15 +28,9 @@ const iconvue = L.icon({
 let icons = [
   { name: "js", ob: iconjs },
   { name: "java", ob: iconjava },
-  { name: "vue", ob: iconpython },
+  { name: "python", ob: iconpython },
   { name: "php", ob: iconphp },
   { name: "vue", ob: iconvue },
 ];
 
 export default icons;
-
-// export const customIcon2 = L.icon({
-//   iconUrl: 'path/to/icon2.png',
-//   iconSize: [24, 24],
-//   iconAnchor: [12, 24]
-// });

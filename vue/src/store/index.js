@@ -16,7 +16,7 @@ const tmpTags = [
 const store = createStore({
   state: {
     user: {
-      data: {},
+      data: JSON.parse(sessionStorage.getItem("USER")) || {},
       token: sessionStorage.getItem("TOKEN"),
     },
     currentCompany: { loading: false, data: {} },
@@ -24,6 +24,8 @@ const store = createStore({
     offers: { loading: false, data: [], links: [] },
     companies: { loading: false, data: [], links: [] },
     userOffers: { loading: false, data: [] },
+    companyApplications: { data: [] },
+    myApplications: { data: [] },
     tags: [...tmpTags],
   },
   getters: {},
@@ -34,6 +36,9 @@ const store = createStore({
         .get(`/offer/${id}`)
         .then((res) => {
           commit("setCurrentOffer", res.data);
+          if (res.data.application) {
+            commit("setCurrentApplication", res.data.application ?? null);
+          }
           commit("setCurrentOfferLoading", false);
           return res;
         })
@@ -68,15 +73,11 @@ const store = createStore({
       delete offer.image_url;
       let response;
       if (offer.id) {
-        console.log("put");
-        console.log(offer);
         response = axiosClient.put(`/offer/${offer.id}`, offer).then((res) => {
-          console.log(res);
           return res.data;
         });
       } else {
         response = axiosClient.post(`/offer`, offer).then((res) => {
-          console.log(res.data);
           return res.data;
         });
       }
@@ -89,27 +90,34 @@ const store = createStore({
         response = axiosClient
           .put(`/company/${company.id}`, company)
           .then((res) => {
-            // this.commit("updateCompany", res.data);
-            console.log(res);
+            commit("setUserCompany", res.data);
             return res.data;
           });
       } else {
         response = axiosClient.post(`/company`, company).then((res) => {
-          // this.commit("updateCompany", res.data);
-          console.log(res.data);
+          commit("setUserCompany", res.data);
           return res.data;
         });
       }
       return response;
     },
-    getOffers({ commit }, { url = null } = {}) {
-      url = url || "/offer/offers";
-      commit("setOffersLoading", true);
-      return axiosClient.get(url).then((res) => {
-        commit("setOffersLoading", false);
-        commit("setOffers", res.data);
-        return res;
+    saveApplication({ commit }, appl) {
+      let response = axiosClient.post(`/application`, appl).then((res) => {
+        commit("setCurrentApplication", res.data.data);
+        return res.data;
       });
+      return response;
+    },
+    getOffers({ commit }, { keywords = null } = {}) {
+      commit("setOffersLoading", true);
+      return axiosClient
+        .get("/offer/offers", { params: { keyword: keywords } })
+        .then((res) => {
+          console.log(res);
+          commit("setOffersLoading", false);
+          commit("setOffers", res.data);
+          return res;
+        });
     },
     getMyOffers({ commit }, { id }) {
       // url = url || "/offer/offers";
@@ -117,6 +125,18 @@ const store = createStore({
       return axiosClient.get(`company/${id}/offer`).then((res) => {
         commit("setUserOffersLoading", false);
         commit("setUserOffers", res.data);
+        return res;
+      });
+    },
+    getCompanyApplications({ commit }) {
+      return axiosClient.get(`application/company`).then((res) => {
+        commit("setCompanyApplications", res.data);
+        return res;
+      });
+    },
+    getMyApplications({ commit }) {
+      return axiosClient.get(`application/application`).then((res) => {
+        commit("setMyApplications", res.data);
         return res;
       });
     },
@@ -134,8 +154,9 @@ const store = createStore({
       });
     },
     logout({ commit }) {
-      commit("logout");
       return axiosClient.post("/logout").then((data) => {
+        commit("logout");
+
         return data;
       });
     },
@@ -145,13 +166,18 @@ const store = createStore({
       state.user.data = {};
       state.user.token = null;
       sessionStorage.removeItem("TOKEN");
+      sessionStorage.removeItem("USER");
     },
     setUser: (state, userData) => {
       state.user.token = userData.token;
       state.user.data = userData.user;
+      sessionStorage.setItem("USER", JSON.stringify(userData.user));
+
       sessionStorage.setItem("TOKEN", userData.token);
     },
-
+    setUserCompany: (state, company) => {
+      state.user.data.company = company.data;
+    },
     setCurrentCompanyLoading(state, status) {
       state.currentCompany.loading = status;
     },
@@ -174,8 +200,17 @@ const store = createStore({
     setCompanies(state, data) {
       state.companies.data = data.data;
     },
+    setCompanyApplications(state, data) {
+      state.companyApplications.data = data.data;
+    },
+    setMyApplications(state, data) {
+      state.myApplications.data = data.data;
+    },
     setCurrentOffer(state, data) {
       state.currentOffer.data = data.data;
+    },
+    setCurrentApplication(state, data) {
+      state.currentOffer.data.application = data;
     },
     setOffers(state, data) {
       state.offers.data = data.data;

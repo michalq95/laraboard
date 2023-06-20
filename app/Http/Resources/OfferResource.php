@@ -14,12 +14,14 @@ class OfferResource extends JsonResource
      */
     public function toArray($request)
     {
+
+
         return [
             'id' => $this->id,
-            'company_id' => $this->company->id,
-            'company_name' => $this->company->name,
-            'loc_x' => $this->company->loc_x,
-            'loc_y' => $this->company->loc_y,
+            'company_id' => $this->company?->id,
+            'company_name' => $this->company?->name,
+            'loc_x' => $this->company?->loc_x,
+            'loc_y' => $this->company?->loc_y,
 
             'title' => $this->title,
             'slug' => $this->slug,
@@ -32,8 +34,7 @@ class OfferResource extends JsonResource
             'bracket_high' => $this->bracket_high,
             'currency' => $this->currency,
             'icon' => $this->icon,
-            'tags' => $this->tags
-
+            'tags' => $this->tags->pluck('name'),
 
         ];
     }

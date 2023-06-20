@@ -27,6 +27,16 @@ class Offer extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function getApplicationForUser($userId)
+    {
+        return $this->applications()->where('user_id', $userId)->first();
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom(['id', 'title'])->saveSlugsTo('slug');

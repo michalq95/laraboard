@@ -4,8 +4,9 @@
       <div class="flex justify-between items-center">
         <h1 class="text-3x1 font-bold">Companies</h1>
         <router-link
+          v-if="store.state.user.token"
           :to="{ name: 'CompanyCreate' }"
-          class="py-3 px-2 bg-yellow-300 rounded-lg hover:bg-yellow-400"
+          class="py-3 px-2 bg-yellow-900 hover:bg-yellow-800"
           ><span v-if="!store.state.user.data.company">Create new company</span
           ><span v-else>Edit your company</span></router-link
         >
@@ -15,7 +16,7 @@
       <div
         v-for="company in companies"
         :key="company.id"
-        class="flex justify-between items-center py-3 px-5 shadow-md bg-blue-300 hover:bg-blue-300 h-[80px]"
+        class="flex justify-between items-center py-3 px-5 shadow-md dark:bg-sky-900 dark:hover:bg-sky-700 h-[80px]"
       >
         <img :src="company.image_url" alt="" class="w-8 object-cover" />
         <h4>
@@ -28,7 +29,7 @@
         <div v-if="company.id === userCompanyId">
           <router-link
             :to="{ name: 'CompanyCreate' }"
-            class="py-2 px-2 bg-blue-500 rounded-lg hover:bg-blue-400"
+            class="py-2 px-2 rounded-lg bg-blue-500 hover:bg-blue-400 dark:bg-blue-800 dark:hover:bg-blue-700"
             >Edit company</router-link
           >
         </div>

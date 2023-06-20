@@ -4,8 +4,9 @@
       <div class="flex justify-between items-center">
         <h1 class="text-3x1 font-bold">Offers</h1>
         <router-link
+          v-if="userCompanyId"
           :to="{ name: 'OfferCreateNew' }"
-          class="py-3 px-2 bg-yellow-300 rounded-lg hover:bg-yellow-400"
+          class="py-3 px-2 rounded-lg bg-yellow-300 hover:bg-yellow-400 dark:bg-yellow-900 dark:hover:bg-yellow-800"
           >Add new offer</router-link
         >
       </div>
@@ -13,9 +14,27 @@
     <div v-if="offers.loading" class="flex justify-center">Loading...</div>
     <div v-else>
       <div>
-        <label for="title" class="block text-sm font-medium text-gray-700"
-          >Location</label
+        <label for="search" class="block text-sm font-medium text-gray-500"
+          >Search</label
         >
+        <input
+          type="text"
+          name="search"
+          id="search"
+          v-model="queryString"
+          autocomplete="query string"
+          style="font-size: larger"
+          class="mb-5 py-3 text-7xl w-5/6 dark:bg-slate-300 dark:text-black focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md"
+        />
+        <button
+          autocomplete="search"
+          class="mt-1 focus:ring-indigo-500 w-1/6 mb-5 py-3 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-r-md"
+          @click="search"
+        >
+          Search
+        </button>
+      </div>
+      <div>
         <button
           autocomplete="company_location"
           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -23,13 +42,13 @@
         >
           Show Map
         </button>
-        <Map :list="offers.data"></Map>
+        <Map v-if="showMap" :list="offers.data"></Map>
       </div>
       <div class="grid grid-cols-1 gap-4">
         <div
           v-for="offer in offers.data"
           :key="offer.id"
-          class="flex justify-between items-center py-3 px-5 shadow-md bg-blue-300 hover:bg-blue-300 h-[80px]"
+          class="flex justify-between items-center py-3 px-5 shadow-md bg-sky-300 hover:bg-sky-200 dark:bg-sky-950 dark:hover:bg-sky-800 h-[80px]"
         >
           <img :src="offer.image" alt="" class="w-8 object-cover" />
           <h4>
@@ -38,14 +57,22 @@
               >{{ offer.title }}</router-link
             >
           </h4>
-          <h5>{{ offer.bracket_low }}-{{ offer.bracket_high }}</h5>
+          <h5>
+            {{ offer.bracket_low }}-{{ offer.bracket_high }}
+            {{ offer.currency }}
+          </h5>
+          <div class="flex flex-col justify-between items-center">
+            <span v-for="tag in offer.tags">
+              {{ tag }}
+            </span>
+          </div>
           <div
             v-if="offer.company_id === userCompanyId"
             class="flex flex-col justify-between items-center"
           >
             <router-link
               :to="{ name: 'OfferCreate', params: { id: offer.id } }"
-              class="py-2 px-2 bg-blue-500 rounded-lg hover:bg-blue-400"
+              class="py-2 px-2 bg-sky-300 hover:bg-sky-200 dark:bg-sky-900 dark:hover:bg-sky-700 rounded-lg"
               >Edit offer</router-link
             >
             <button
@@ -61,7 +88,7 @@
         </div>
       </div>
 
-      <div class="flex justify-center mt-5">
+      <!-- <div class="flex justify-center mt-5">
         <nav class="relative z-0 inline-flex justify-center-rounded-md">
           <a
             v-html="link.label"
@@ -70,15 +97,10 @@
             :disabled="!link.url"
             @click="getForPage(link)"
             class="relative inline-flex items-center px-4 py-2 border text-sm cursor-pointer flex-nowrap"
-            :class="[
-              link.active
-                ? 'z-10 bg-blue-300 border-blue-400 text-blue-600'
-                : 'border-gray-600 text-gray-500 ',
-            ]"
           >
           </a>
         </nav>
-      </div>
+      </div> -->
     </div>
   </PageComponent>
 </template>
@@ -92,16 +114,13 @@ import { computed, ref } from "vue";
 const offers = computed(() => store.state.offers);
 const userCompanyId = computed(() => store.state.user?.data?.company?.id);
 let showMap = ref(false);
+let queryString = ref("");
 
 store.dispatch("getOffers");
 
 function deleteOffer(offer) {}
-
-function getForPage(link) {
-  if (!link.url || link.active) {
-    return;
-  }
-  store.dispatch("getOffers", { url: link.url });
+function search() {
+  store.dispatch("getOffers", { keywords: queryString.value });
 }
 </script>
 

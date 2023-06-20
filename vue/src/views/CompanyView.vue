@@ -10,9 +10,9 @@
     <div v-if="companyLoading" class="flex justify-center">Loading...</div>
 
     <div v-else class="shadow sm:rounded-md sm:overflow-hidden">
-      <div class="px-4 py-5 bg-white space-y-6">
+      <div class="px-4 py-5 bg-white dark:bg-gray-800 space-y-6">
         <div>
-          <label class="block text-sm font-medium text-gray-700">Image</label>
+          <label class="block text-sm font-medium text-gray-500">Image</label>
           <div class="mt1 flex items-center">
             <img
               v-if="model.image_url"
@@ -26,7 +26,7 @@
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-[80%] w-[80%] text-gray-300"
+                class="h-[80%] w-[80%] text-gray-500"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -43,13 +43,13 @@
 
         <!-- Title -->
         <div>
-          <label for="title" class="block text-sm font-medium text-gray-700"
+          <label for="title" class="block text-sm font-medium text-gray-500"
             >Name</label
           >
           {{ model.name }}
         </div>
         <div>
-          <label for="status" class="block text-sm font-medium text-gray-700"
+          <label for="status" class="block text-sm font-medium text-gray-500"
             >Status</label
           >
           {{ model.status }}
@@ -57,7 +57,7 @@
         <div>
           <label
             for="description"
-            class="block text-sm font-medium text-gray-700"
+            class="block text-sm font-medium text-gray-500"
             >description</label
           >
           {{ model.description }}
@@ -66,7 +66,7 @@
         <div>
           <label
             for="bracket_high"
-            class="block text-sm font-medium text-gray-700"
+            class="block text-sm font-medium text-gray-500"
             >address</label
           >
 
@@ -77,11 +77,13 @@
             {{ model.status }}
           </div>
           <div class="ml-3 text-sm">
-            <label for="status" class="font-medium text-gray-700">Active</label>
+            <label for="status" class="font-medium text-gray-500">Active</label>
           </div>
         </div>
 
-        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6"></div>
+        <!-- <div
+          class="px-4 py-3 bg-gray-50 dark:bg-sky-800 text-right sm:px-6"
+        ></div> -->
       </div>
     </div>
   </PageComponent>

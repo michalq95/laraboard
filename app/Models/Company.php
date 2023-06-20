@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -21,6 +22,11 @@ class Company extends Model
         return $this->hasMany(Offer::class);
     }
 
+    public function applications(): HasManyThrough
+    {
+        return $this->hasManyThrough(Application::class, Offer::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
@@ -31,6 +37,7 @@ class Company extends Model
         'name',
         'slug',
         'status',
+        'email',
         'description',
         'address',
         'loc_x',

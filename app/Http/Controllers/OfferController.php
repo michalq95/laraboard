@@ -5,15 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Offer;
 use App\Http\Requests\StoreOfferRequest;
 use App\Http\Requests\UpdateOfferRequest;
+use App\Http\Resources\ApplicationResource;
 use App\Http\Resources\OfferResource;
 use App\Models\Company;
 use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
+
 
 class OfferController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum')->only('show');
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,13 +33,26 @@ class OfferController extends Controller
 
     public function public_index(Request $request)
     {
-        $offers = Offer::where('status', 'active')->orderBy('created_at', 'desc')->get();
-        // return OfferResource::collection($offers);
+        $keywords = $request->input('keyword');
+        $keywords = explode(" ", $keywords);
 
+        $query = Offer::with(["company", "tags"])
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc');
 
-        // $offers = Cache::remember('active_offers', 3600, function () {
-        //     return Offer::where('status', 'active')->orderBy('created_at', 'desc')->get();
-        // });
+        if (!empty($keywords)) {
+            $query->where(function ($query) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $query->where('title', 'LIKE', "%$keyword%")
+                        ->orWhereHas('tags', function ($query) use ($keyword) {
+                            $query->where('name', 'LIKE', "%$keyword%");
+                        });
+                }
+            });
+        }
+
+        $offers = $query->get();
+
         return OfferResource::collection($offers);
     }
 
@@ -72,10 +92,38 @@ class OfferController extends Controller
      * @param  \App\Models\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function show(Offer $offer)
+    public function show(Request $request, Offer $offer)
     {
-        return new OfferResource($offer);
+
+        $application = null;
+        if (auth('sanctum')->user()) {
+            $application = $offer->getApplicationForUser(auth('sanctum')->user()->id);
+        }
+        //  dd(Auth::user());
+        return (new OfferResource($offer))->additional([
+            'application' => $application ? new ApplicationResource($application) : null,
+        ]);
     }
+
+    // public function indexAuthenticated()
+    // {
+    //     return OfferResource::collection(Offer::orderBy('created_at', 'desc'));
+    // }
+
+    // public function showAuthenticated(Offer $offer)
+    // {
+    //     $application = null;
+
+    //     if (Auth::check()) {
+    //         // dd(Auth::user());
+
+    //         $application = $offer->getApplicationForUser(Auth::user()->id);
+    //     }
+
+    //     return (new OfferResource($offer))->additional([
+    //         'application' => $application ? new ApplicationResource($application) : null,
+    //     ]);
+    // }
 
     /**
      * Update the specified resource in storage.

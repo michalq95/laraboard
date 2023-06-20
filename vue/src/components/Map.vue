@@ -19,6 +19,7 @@ import icons from "../Icons";
 
 import L, { Map } from "leaflet";
 import "leaflet.markercluster";
+import { useRouter } from "vue-router";
 function initMap(element: HTMLElement) {
   const map = L.map(element, {
     // options
@@ -31,15 +32,21 @@ function initMap(element: HTMLElement) {
   return map;
 }
 
+function select() {
+  console.log("select");
+}
+
 export default defineComponent({
   emits: ["created", "removed", "setPos"],
   props: ["x", "y", "list"],
   setup(props, { emit }) {
+    const router = useRouter();
     const mapElement = ref();
     let map: any;
     let x = ref(props.x);
     let y = ref(props.y);
     let list = props.list;
+    let markerNumber = 0;
 
     let marker = ref();
     var markers = L.markerClusterGroup({ disableClusteringAtZoom: 17 });
@@ -59,26 +66,29 @@ export default defineComponent({
           if (x.value) {
             marker.value = L.marker({ lat: x.value, lng: y.value }).addTo(map);
           }
-          // let group = L.featureGroup(markerArray).addTo(map);
-          list.forEach((el) => {
-            let ic =
-              (icons.find((icon) => icon.name === el.icon) || {}).ob || null;
+          if (list.length > markerNumber) {
+            list.forEach((el) => {
+              let ic =
+                (icons.find((icon) => icon.name === el.icon) || {}).ob || null;
 
-            let m;
-            if (ic) m = L.marker([el.loc_x, el.loc_y], { icon: ic });
-            else {
-              m = L.marker([el.loc_x, el.loc_y]);
-            }
+              let m;
+              if (ic) m = L.marker([el.loc_x, el.loc_y], { icon: ic });
+              else {
+                m = L.marker([el.loc_x, el.loc_y]);
+              }
 
-            m.bindPopup(
-              `${el.title}<br>` +
-                (el.bracket_high
-                  ? `${el.bracket_low}-${el.bracket_high} ${el.currency}<br>`
-                  : ``) +
-                `<a href="/offers/${el.id}"target="_self" onclick="event.preventDefault() Vue.router.push('/offers/${el.id}')">Learn more</a>`
-            );
-            markers.addLayer(m);
-          });
+              m.bindPopup(
+                `${el.title}<br>` +
+                  (el.bracket_high
+                    ? `${el.bracket_low}-${el.bracket_high} ${el.currency}<br>`
+                    : ``) +
+                  // `<a href="/offers/${el.id}"target="_self" onclick="event.preventDefault() Vue.router.push('/offers/${el.id}')">Learn more</a>`
+                  `<div target="_self" style="cursor:pointer; color:blue;"  onclick="event.preventDefault(); Vue.router.push('/offers/${el.id}')">Learn more</div>`
+              );
+              markerNumber++;
+              markers.addLayer(m);
+            });
+          }
           map.addLayer(markers);
           emit("created", map);
         } else {

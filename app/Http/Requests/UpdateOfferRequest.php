@@ -35,6 +35,7 @@ class UpdateOfferRequest extends FormRequest
             'bracket_low' => 'integer|required_with:bracket_high',
             'bracket_high' => 'integer|required_with:bracket_low|gte:bracket_low',
             'currency' => 'string|required_with:bracket_low',
+            'icon' => 'string|nullable',
             // 'expire_date' => 'nullable|date',
             'tags' => "nullable|string"
         ];

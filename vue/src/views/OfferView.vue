@@ -10,9 +10,9 @@
 
     <div>
       <div class="shadow sm:rounded-md sm:overflow-hidden">
-        <div class="px-4 py-5 bg-white space-y-6">
+        <div class="px-4 py-5 bg-white dark:bg-gray-800 space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Image</label>
+            <label class="block text-sm font-medium text-gray-500">Image</label>
             <div class="mt1 flex items-center">
               <img
                 v-if="model.image"
@@ -26,7 +26,7 @@
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-[80%] w-[80%] text-gray-300"
+                  class="h-[80%] w-[80%] text-gray-500"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -43,7 +43,7 @@
 
           <!-- Title -->
           <div>
-            <label for="title" class="block text-sm font-medium text-gray-700"
+            <label for="title" class="block text-sm font-medium text-gray-500"
               >Title</label
             >
             <span
@@ -52,7 +52,7 @@
             </span>
           </div>
           <div>
-            <label for="status" class="block text-sm font-medium text-gray-700"
+            <label for="status" class="block text-sm font-medium text-gray-500"
               >Status</label
             >
             <span
@@ -63,7 +63,7 @@
           <div>
             <label
               for="description"
-              class="block text-sm font-medium text-gray-700"
+              class="block text-sm font-medium text-gray-500"
               >description</label
             >
             <span
@@ -74,7 +74,7 @@
           <div>
             <label
               for="bracket_low"
-              class="block text-sm font-medium text-gray-700"
+              class="block text-sm font-medium text-gray-500"
               >bracket_low</label
             >
             <span
@@ -86,7 +86,7 @@
           <div>
             <label
               for="bracket_high"
-              class="block text-sm font-medium text-gray-700"
+              class="block text-sm font-medium text-gray-500"
               >bracket_high</label
             >
             <span
@@ -98,7 +98,7 @@
           <div>
             <label
               for="bracket_high"
-              class="block text-sm font-medium text-gray-700"
+              class="block text-sm font-medium text-gray-500"
               >Offer ending at</label
             >
             <span
@@ -107,18 +107,20 @@
             >
           </div>
 
-          <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+          <div class="px-4 py-5 bg-white dark:bg-gray-800 space-y-6 sm:p-6">
             <div class="flex flex-wrap">
               <span
                 v-for="tag in model.tags"
                 class="text-center text-gray-600 p-5"
               >
-                {{ tag.name }}
+                {{ tag }}
               </span>
             </div>
           </div>
         </div>
       </div>
+      Apply
+      <Apply v-if="store.state?.user.token" :offer="model"></Apply>
     </div>
   </PageComponent>
   {{ model }}
@@ -128,6 +130,7 @@ import { ref, computed, watch } from "vue";
 import store from "../store";
 import { useRoute } from "vue-router";
 import PageComponent from "../components/PageComponent.vue";
+import Apply from "../components/Apply.vue";
 
 const route = useRoute();
 let model = ref({
@@ -138,6 +141,7 @@ let model = ref({
   bracket_high: null,
   currency: "",
   tags: [],
+  application: null,
 });
 let filterText = ref("");
 let selected = null;
@@ -148,7 +152,6 @@ watch(
     model.value = {
       // ...JSON.parse(JSON.stringify(newVal)),
       ...newVal,
-      status: newVal.status !== "draft",
     };
   }
 );

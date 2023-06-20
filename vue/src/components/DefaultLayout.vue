@@ -1,14 +1,6 @@
 <template>
-  <!--
-      This example requires updating your template:
-  
-      ```
-      <html class="h-full bg-gray-100">
-      <body class="h-full">
-      ```
-    -->
   <div class="h-full w-full">
-    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-gray-600" v-slot="{ open }">
       <div class="m-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
@@ -29,7 +21,7 @@
                   :class="[
                     this.$route.name === item.to.name
                       ? ''
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      : 'text-white hover:bg-gray-700 hover:text-white',
                     'rounded-md px-3 py-2 text-sm font-medium',
                   ]"
                   >{{ item.name }}</router-link
@@ -43,14 +35,10 @@
               <Menu as="div" class="relative ml-3">
                 <div>
                   <MenuButton
-                    class="flex max-w-xs items-center rounded-full bg-white-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 w-11 h-11"
                   >
                     <span class="sr-only">Open user menu</span>
-                    <img
-                      class="h-8 w-8 rounded-full"
-                      :src="user.imageUrl"
-                      alt=""
-                    />
+                    <img src="../assets/lines.svg" class="w-full self-center" />
                   </MenuButton>
                 </div>
                 <transition
@@ -64,15 +52,35 @@
                   <MenuItems
                     class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                   >
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem v-if="Object.keys(user).length != 0">
                       <a
                         @click="logout"
                         :class="[
-                          'block px-4 py-2 text-sm text-gray-700 cursor-pointer',
+                          'block px-4 py-2 text-sm text-gray-500 cursor-pointer',
                         ]"
                         >Logout</a
                       >
                     </MenuItem>
+                    <span v-else>
+                      <MenuItem>
+                        <router-link
+                          :to="{ name: 'Login' }"
+                          :class="[
+                            'block px-4 py-2 text-sm text-gray-500 cursor-pointer',
+                          ]"
+                          >Log In</router-link
+                        >
+                      </MenuItem>
+                      <MenuItem>
+                        <router-link
+                          :to="{ name: 'Register' }"
+                          :class="[
+                            'block px-4 py-2 text-sm text-gray-500 cursor-pointer',
+                          ]"
+                          >Register</router-link
+                        >
+                      </MenuItem>
+                    </span>
                   </MenuItems>
                 </transition>
               </Menu>
@@ -81,13 +89,19 @@
           <div class="-mr-2 flex md:hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
-              class="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
               <span class="sr-only">Open main menu</span>
               <img
                 v-if="!open"
-                class="block h-6 w-6"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                src="../assets/lines.svg"
+                class="block h-6 w-6 self-center"
+                alt="Your Company"
+              />
+              <img
+                v-else
+                src="../assets/lines.svg"
+                class="block h-6 w-6 self-center"
                 alt="Your Company"
               />
             </DisclosureButton>
@@ -105,7 +119,7 @@
             :class="[
               this.$route.name === item.to.name
                 ? ''
-                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                : 'text-white hover:bg-gray-400',
               'block rounded-md px-3 py-2 text-base font-medium',
             ]"
             >{{ item.name }}</router-link
@@ -126,12 +140,15 @@
             </div>
           </div>
           <div class="mt-3 space-y-1 px-2">
-            <DisclosureButton
-              as="a"
-              @click="logout"
-              class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white cursor-pointer"
-              >Logout</DisclosureButton
-            >
+            <div v-if="Object.keys(user).length != 0">
+              <DisclosureButton
+                as="a"
+                @click="logout"
+                class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white cursor-pointer"
+                >Logout</DisclosureButton
+              >
+            </div>
+            <div v-else></div>
           </div>
         </div>
       </DisclosurePanel>
