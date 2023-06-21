@@ -114,7 +114,6 @@
         </div>
       </div>
     </template>
-    {{ companyApplications }}
   </PageComponent>
 </template>
 
@@ -128,7 +127,6 @@ import axiosClient from "../axios";
 
 const user = computed(() => store.state.user.data);
 let offers = computed(() => store.state.userOffers);
-// let companyApplications = computed(() => store.state.companyApplications);
 let myApplications = computed(() => store.state.myApplications);
 
 let companyApplications = ref({
@@ -160,7 +158,6 @@ onMounted(() => {
     getCompanyApplications().then((data) => {
       companyApplications.value = data;
     });
-    // store.dispatch("getCompanyApplications");
   }
   if (user.value) {
     store.dispatch("getMyApplications");
@@ -180,24 +177,6 @@ function markAsRead(app) {
       }
     });
 }
-
-// watchEffect(() => {
-//   if (user.value && user.value.company) {
-//     store.dispatch("getMyOffers", { id: user.value.company.id });
-//   }
-// });
-
-// watchEffect(() => {
-//   if (user.value && user.value.company) {
-//     store.dispatch("getCompanyApplications");
-//   }
-// });
-
-// watchEffect(() => {
-//   if (user.value) {
-//     store.dispatch("getMyApplications");
-//   }
-// });
 </script>
 
 <style scoped lang="scss"></style>

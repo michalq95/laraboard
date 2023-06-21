@@ -69,23 +69,11 @@ const props = defineProps({
 });
 
 let model = ref({
-  application: "In response to your offer yadda yadda",
-  // offer_id: props.offer.id,
+  application: "In response to your offer I am enclosing a resume",
   resume: null,
 
   status: 0,
 });
-
-// watch(
-//   () => store.state.currentOffer.data.application,
-//   (newVal, oldVal) => {
-//     model.value = {
-//       // ...JSON.parse(JSON.stringify(newVal)),
-//       ...newVal,
-//       // status: newVal.status !== "draft",
-//     };
-//   }
-// );
 
 function onFileChoose(ev) {
   model.value.resume = ev.target.files[0];

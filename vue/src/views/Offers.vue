@@ -23,12 +23,12 @@
           id="search"
           v-model="queryString"
           autocomplete="query string"
-          style="font-size: larger"
-          class="mb-5 py-3 text-7xl w-5/6 dark:bg-slate-300 dark:text-black focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md"
+          @keyup.enter="search"
+          class="mt-1 py-3 w-5/6 dark:bg-slate-300 dark:text-black focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md"
         />
         <button
           autocomplete="search"
-          class="mt-1 focus:ring-indigo-500 w-1/6 mb-5 py-3 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-r-md"
+          class="mt-1 focus:ring-indigo-500 w-1/6 py-3 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-r-md"
           @click="search"
         >
           Search
