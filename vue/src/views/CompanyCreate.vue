@@ -163,7 +163,6 @@
         </div>
       </div>
     </form>
-    {{ model }}
   </PageComponent>
 </template>
 <script setup>

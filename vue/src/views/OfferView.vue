@@ -123,7 +123,6 @@
       <Apply v-if="store.state?.user.token" :offer="model"></Apply>
     </div>
   </PageComponent>
-  {{ model }}
 </template>
 <script setup>
 import { ref, computed, watch } from "vue";
