@@ -13,6 +13,17 @@ import store from "../store";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
 
+// const offerBelongsToUser = (to, from, next) => {
+//   const offers = this.$store.state.user.company.offer_ids;
+//   const offerId = to.params.id;
+
+//   if (offers.includes(offerId)) {
+//     next();
+//   } else {
+//     next({ name: "OfferView", params: { id: offerId } });
+//   }
+// };
+
 const routes = [
   {
     path: "/auth",
@@ -57,6 +68,29 @@ const routes = [
     name: "OfferCreate",
     component: OfferCreate,
     meta: { requiresAuth: true },
+    beforeEnter: async (to, from, next) => {
+      // try {
+      //   const offers = this.$store.state.user.company.offer_ids;
+      //   const offerId = to.params.id;
+
+      //   if (offers.includes(offerId)) {
+      //     next();
+      //   } else {
+      //     next({ name: "OfferView", params: { id: offerId } });
+      //   }
+      // } catch (e) {
+      //   next({ name: "Offers" });
+      // }
+      const res = await store.dispatch("getOffer", to.params.id);
+      console.log(res.data.data);
+      console.log(store.state);
+      if (res.data.data.company_id == store.state.user.data.company.id) {
+        next();
+      } else {
+        next({ name: "OfferView", params: { id: to.params.id } });
+      }
+      // next();
+    },
   },
   {
     path: "/offers/:id",

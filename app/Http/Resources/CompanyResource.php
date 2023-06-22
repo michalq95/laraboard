@@ -27,8 +27,8 @@ class CompanyResource extends JsonResource
             'updated_at' => $this->updated_at,
             'loc_x' => $this->loc_x,
             'loc_y' => $this->loc_y,
-            'offers' => $this->offers,
-            "image_url" => $this->image ? URL::to($this->image) : null
+            'offers' => $this->offers->pluck("id"),
+            "image_url" => $this->image ? URL::to($this->image) : null,
         ];
     }
 }

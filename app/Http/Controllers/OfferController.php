@@ -134,6 +134,14 @@ class OfferController extends Controller
      */
     public function update(UpdateOfferRequest $request, Offer $offer)
     {
+
+
+        $company_id = $request->user()->company->id;
+        if ($offer->company_id != $company_id) {
+            return abort(403, "Unauthorized");
+        }
+
+
         $data = $request->validated();
 
         $tags = explode(',', request()->input('tags'));
