@@ -12,7 +12,7 @@ use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Cache;
 
 class OfferController extends Controller
 {
@@ -49,9 +49,12 @@ class OfferController extends Controller
                         });
                 }
             });
+            $offers = $query->get();
         }
-
-        $offers = $query->get();
+        // $offers = $query->get();
+        $offers = Cache::remember('offers', 60 * 60 * 24, function () use ($query) {
+            return $query->get();
+        });
 
         return OfferResource::collection($offers);
     }

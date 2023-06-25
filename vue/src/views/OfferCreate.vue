@@ -334,8 +334,8 @@ const icons = [
   { value: "java", image: "../../src/assets/icons/java.png" },
 ];
 
-if (route.params.id) {
-  store.dispatch("getOffer", route.params.id);
-}
+// if (route.params.id) {
+//   store.dispatch("getOffer", route.params.id);
+// }
 </script>
 <style lang=""></style>

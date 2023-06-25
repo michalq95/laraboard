@@ -21,7 +21,7 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         // $user = $request->user();
-        return CompanyResource::collection(Company::orderBy('created_at', 'desc')->paginate(25));
+        return CompanyResource::collection(Company::with("offers")->orderBy('created_at', 'desc')->paginate(25));
     }
 
     /**

@@ -17,6 +17,8 @@ class Offer extends Model
 
     protected $fillable = ['title', 'company_id', 'slug', 'description', 'status', 'bracket_low', 'bracket_high', 'currency', 'expire_date', 'icon'];
 
+    protected $dates = ['expire_date', 'created_at', 'updated_at'];
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
