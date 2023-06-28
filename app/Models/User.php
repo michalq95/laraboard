@@ -45,6 +45,14 @@ class User extends Authenticatable
         return $this->hasMany(Application::class);
     }
 
+    public function isAdmin()
+    {
+        return $this->role == 0;
+    }
+    public function isMod()
+    {
+        return $this->role < 2;
+    }
     /**
      * The attributes that should be cast.
      *

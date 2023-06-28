@@ -28,7 +28,11 @@ const store = createStore({
     myApplications: { data: [] },
     tags: [...tmpTags],
   },
-  getters: {},
+  getters: {
+    isMod(state) {
+      return state.user.data.role < 2;
+    },
+  },
   actions: {
     getOffer({ commit }, id) {
       commit("setCurrentOfferLoading", true);
@@ -120,7 +124,6 @@ const store = createStore({
         });
     },
     getMyOffers({ commit }, { id }) {
-      // url = url || "/offer/offers";
       commit("setUserOffersLoading", true);
       return axiosClient.get(`company/${id}/offer`).then((res) => {
         commit("setUserOffersLoading", false);

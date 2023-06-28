@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
+import AdminPanel from "../views/AdminPanel.vue";
+import Tags from "../views/Tags.vue";
 import Register from "../views/Register.vue";
 import Offers from "../views/Offers.vue";
 import OfferView from "../views/OfferView.vue";
@@ -13,16 +15,13 @@ import store from "../store";
 import DefaultLayout from "../components/DefaultLayout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
 
-// const offerBelongsToUser = (to, from, next) => {
-//   const offers = this.$store.state.user.company.offer_ids;
-//   const offerId = to.params.id;
-
-//   if (offers.includes(offerId)) {
-//     next();
-//   } else {
-//     next({ name: "OfferView", params: { id: offerId } });
-//   }
-// };
+const adminguard = async (to, from, next) => {
+  if (store.getters.isMod) {
+    next();
+  } else {
+    next({ name: "Dashboard" });
+  }
+};
 
 const routes = [
   {
@@ -37,6 +36,18 @@ const routes = [
       { path: "/login", name: "Login", component: Login },
       { path: "/register", name: "Register", component: Register },
     ],
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: AdminPanel,
+    meta: { requiresAuth: true },
+    beforeEnter: adminguard,
+  },
+  {
+    path: "/admin/tags",
+    name: "Tags",
+    component: Tags,
   },
   {
     path: "/",

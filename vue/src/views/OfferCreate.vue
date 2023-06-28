@@ -314,18 +314,11 @@ watch(
   () => store.state.currentOffer.data,
   (newVal, oldVal) => {
     model.value = {
-      // ...JSON.parse(JSON.stringify(newVal)),
       ...newVal,
-      // tags: newVal.tags.map((obj) => obj.name),
     };
   }
 );
 
-// if (route.params.id) {
-//   model.value = store.state.offers.find(
-//     (s) => s.id === parseInt(route.params.id)
-//   );
-// }
 const icons = [
   { value: "js", image: "../../src/assets/icons/js.png" },
   { value: "php", image: "../../src/assets/icons/php.png" },

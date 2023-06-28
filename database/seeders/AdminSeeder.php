@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-
-        User::factory()->count(10)->create();
+        User::create([
+            'name' => "admin",
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('password'),
+            'email_verified_at' => Carbon::now(),
+            'role' => 0
+        ]);
     }
 }

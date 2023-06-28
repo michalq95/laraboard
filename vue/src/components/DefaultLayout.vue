@@ -50,9 +50,10 @@
                   leave-to-class="transform opacity-0 scale-95"
                 >
                   <MenuItems
+                    v-if="Object.keys(user).length != 0"
                     class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                   >
-                    <MenuItem v-if="Object.keys(user).length != 0">
+                    <MenuItem>
                       <a
                         @click="logout"
                         :class="[
@@ -61,7 +62,21 @@
                         >Logout</a
                       >
                     </MenuItem>
-                    <span v-else>
+                    <MenuItem v-if="isMod">
+                      <router-link
+                        :to="{ name: 'Admin' }"
+                        :class="[
+                          'block px-4 py-2 text-sm text-gray-500 cursor-pointer',
+                        ]"
+                        >Admin Panel</router-link
+                      >
+                    </MenuItem>
+                  </MenuItems>
+                  <MenuItems
+                    v-else
+                    class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  >
+                    <span>
                       <MenuItem>
                         <router-link
                           :to="{ name: 'Login' }"
@@ -127,9 +142,6 @@
         </div>
         <div class="border-t border-gray-700 pb-3 pt-4">
           <div class="flex items-center px-5">
-            <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
-            </div>
             <div class="ml-3">
               <div class="text-base font-medium leading-none text-white">
                 {{ user.name }}
@@ -168,14 +180,14 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/vue";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { useStore } from "vuex";
-import { computed } from "vue";
+
+import { computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 const navigation = [
-  { name: "Dashboard", to: { name: "Dashboard" }, current: true },
-  { name: "Offers", to: { name: "Offers" }, current: false },
-  { name: "Companies", to: { name: "Companies" }, current: false },
+  { name: "Dashboard", to: { name: "Dashboard" } },
+  { name: "Offers", to: { name: "Offers" } },
+  { name: "Companies", to: { name: "Companies" } },
 ];
 
 export default {
@@ -191,6 +203,7 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
+    let isMod = computed(() => store.getters.isMod);
 
     function logout() {
       store.dispatch("logout").then(() => {
@@ -204,6 +217,7 @@ export default {
       user: computed(() => store.state.user.data),
       navigation,
       logout,
+      isMod,
     };
   },
 };

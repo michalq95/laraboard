@@ -16,7 +16,7 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 1; $i < 12; $i++) {
             $user = User::factory()->create();
 
             Company::factory()->create(["user_id" => $user->id, "email" => $user->email]);

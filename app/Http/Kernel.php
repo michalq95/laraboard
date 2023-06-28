@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'guard' => \App\Http\Middleware\SwitchGuard::class,
         'allow_invalid_token_access' => \App\Http\Middleware\AllowInvalidTokenAccess::class,
+        'ensure_user_is_mod' => \App\Http\Middleware\EnsureUserIsMod::class,
     ];
 }

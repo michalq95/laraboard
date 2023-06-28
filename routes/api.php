@@ -28,12 +28,18 @@ Route::get("/company/{companyId}/offer", [OfferController::class, 'getCompanyOff
 
 Route::get("/tag", [TagController::class, 'publicIndex']);
 Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('ensure_user_is_mod')->group(function () {
+        Route::get("/tag/all", [TagController::class, 'index']);
+        Route::put("/tag", [TagController::class, 'accept']);
+    });
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
     // Route::get('/offer', [OfferController::class, 'indexAuthenticated']);
     // Route::get('/offer/{offer}', [OfferController::class, 'showAuthenticated']);
+
+
     Route::resource("/offer", OfferController::class)->except(['index', "show"]);;
     Route::resource("/company", CompanyController::class)->except(['index', "show"]);;
     Route::post("/logout", [AuthController::class, 'logout']);
