@@ -103,50 +103,52 @@
             />
           </div>
           <div>
-            <label
-              for="bracket_low"
-              class="block text-sm font-medium text-gray-500"
-              >bracket_low</label
-            >
-            <input
-              type="number"
-              name="bracket_low"
-              id="bracket_low"
-              v-model="model.bracket_low"
-              autocomplete="offer_bracket_low"
-              class="mt-1 dark:bg-slate-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-            />
-          </div>
+            <div class="w-1/3 inline-block pr-4">
+              <label
+                for="bracket_low"
+                class="block text-sm font-medium text-gray-500"
+                >bracket_low</label
+              >
+              <input
+                type="number"
+                name="bracket_low"
+                id="bracket_low"
+                v-model="model.bracket_low"
+                autocomplete="offer_bracket_low"
+                class="mt-1 dark:bg-slate-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
 
-          <div>
-            <label
-              for="bracket_high"
-              class="block text-sm font-medium text-gray-500"
-              >bracket_high</label
-            >
-            <input
-              type="number"
-              name="bracket_high"
-              id="bracket_high"
-              v-model="model.bracket_high"
-              autocomplete="offer_bracket_high"
-              class="mt-1 dark:bg-slate-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-            />
-          </div>
-          <div>
-            <label
-              for="Currency"
-              class="block text-sm font-medium text-gray-500"
-              >Currency</label
-            >
-            <input
-              type="text"
-              name="currency"
-              id="currency"
-              v-model="model.currency"
-              autocomplete="offer_currency"
-              class="mt-1 dark:bg-slate-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-            />
+            <div class="w-1/3 inline-block px-2">
+              <label
+                for="bracket_high"
+                class="block text-sm font-medium text-gray-500"
+                >bracket_high</label
+              >
+              <input
+                type="number"
+                name="bracket_high"
+                id="bracket_high"
+                v-model="model.bracket_high"
+                autocomplete="offer_bracket_high"
+                class="mt-1 dark:bg-slate-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+            <div class="w-1/3 inline-block pl-4">
+              <label
+                for="Currency"
+                class="block text-sm font-medium text-gray-500"
+                >Currency</label
+              >
+              <input
+                type="text"
+                name="currency"
+                id="currency"
+                v-model="model.currency"
+                autocomplete="offer_currency"
+                class="mt-1 dark:bg-slate-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
           </div>
           <div>
             <label for="icon" class="text-sm font-medium text-gray-500"
@@ -239,6 +241,7 @@
       </div>
     </form>
   </PageComponent>
+  <!-- {{ model }} -->
 </template>
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
@@ -289,6 +292,7 @@ function saveOffer() {
 }
 
 onMounted(() => {
+  model.value = store.state.currentOffer.data;
   axiosClient.get(`/tag`).then((res) => {
     allTags.value = res.data.tags.map((el) => el.name);
   });
@@ -310,14 +314,14 @@ let availableTags = computed(() => {
     .filter((el) => el.includes(filterText.value));
 });
 
-watch(
-  () => store.state.currentOffer.data,
-  (newVal, oldVal) => {
-    model.value = {
-      ...newVal,
-    };
-  }
-);
+// watch(
+//   () => store.state.currentOffer.data,
+//   (newVal, oldVal) => {
+//     model.value = {
+//       ...newVal,
+//     };
+//   }
+// );
 
 const icons = [
   { value: "js", image: "../../src/assets/icons/js.png" },

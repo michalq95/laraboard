@@ -16,7 +16,6 @@ class UpdateCompanyRequest extends FormRequest
     public function authorize()
     {
         $company = $this->route('company');
-        // dd($this->user());
         if (Auth::user()->id !== $company->user_id) {
             return false;
         }

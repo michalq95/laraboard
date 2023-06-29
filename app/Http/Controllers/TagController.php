@@ -18,13 +18,10 @@ class TagController extends Controller
     }
     public function index()
     {
-        // if (!Auth::user()->isMod()) abort(403, "Unauthorized");
-
         return response(Tag::all());
     }
     public function accept(Request $request)
     {
-        // if (!Auth::user()->isMod()) abort(403, "Unauthorized");
         $tagIds = $request->input('tag_ids');
         Tag::whereIn('id', $tagIds)->update(['accepted' => true]);
         Cache::forget("tags");

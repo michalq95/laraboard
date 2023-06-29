@@ -7,6 +7,8 @@ use App\Http\Requests\StoreApplicationRequest;
 use App\Http\Requests\UpdateApplicationRequest;
 use App\Http\Resources\ApplicationResource;
 use App\Models\Offer;
+use App\Models\User;
+use App\Notifications\ApplicationStatusNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,6 +95,7 @@ class ApplicationController extends Controller
      */
     public function update(UpdateApplicationRequest $request, Application $application)
     {
+        User::find($application->user_id)->notify(new ApplicationStatusNotification());
         $data = $request->validated();
         $application->update($data);
 

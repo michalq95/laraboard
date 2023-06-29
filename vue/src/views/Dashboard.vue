@@ -3,7 +3,6 @@
     <template v-slot:header>
       <div class="flex justify-between items-center py-5">
         <h1 class="text-3x1 font-bold">Company</h1>
-        <router-link :to="{ name: 'Tags' }"> Manage Tags </router-link>
         <span v-if="!user.company">
           <router-link
             :to="{ name: 'CompanyCreate' }"

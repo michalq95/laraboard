@@ -168,7 +168,7 @@ const store = createStore({
     logout: (state) => {
       state.user.data = {};
       state.user.token = null;
-      state.companyApplications = [];
+      state.companyApplications = {};
       sessionStorage.removeItem("TOKEN");
       sessionStorage.removeItem("USER");
     },

@@ -102,31 +102,10 @@ class OfferController extends Controller
         if (auth('sanctum')->user()) {
             $application = $offer->getApplicationForUser(auth('sanctum')->user()->id);
         }
-        //  dd(Auth::user());
         return (new OfferResource($offer))->additional([
             'application' => $application ? new ApplicationResource($application) : null,
         ]);
     }
-
-    // public function indexAuthenticated()
-    // {
-    //     return OfferResource::collection(Offer::orderBy('created_at', 'desc'));
-    // }
-
-    // public function showAuthenticated(Offer $offer)
-    // {
-    //     $application = null;
-
-    //     if (Auth::check()) {
-    //         // dd(Auth::user());
-
-    //         $application = $offer->getApplicationForUser(Auth::user()->id);
-    //     }
-
-    //     return (new OfferResource($offer))->additional([
-    //         'application' => $application ? new ApplicationResource($application) : null,
-    //     ]);
-    // }
 
     /**
      * Update the specified resource in storage.
@@ -137,13 +116,10 @@ class OfferController extends Controller
      */
     public function update(UpdateOfferRequest $request, Offer $offer)
     {
-
-
         $company_id = $request->user()->company->id;
         if ($offer->company_id != $company_id) {
             return abort(403, "Unauthorized");
         }
-
 
         $data = $request->validated();
 
@@ -154,12 +130,8 @@ class OfferController extends Controller
             $tagIds[] = $tag->id;
         }
         $offer->tags()->sync($tagIds);
-
         $offer->update($data);
 
-
-
-        // dump($request->validated());
         return new OfferResource($offer);
     }
 
