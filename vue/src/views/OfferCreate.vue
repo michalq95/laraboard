@@ -241,7 +241,6 @@
       </div>
     </form>
   </PageComponent>
-  <!-- {{ model }} -->
 </template>
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
@@ -292,7 +291,7 @@ function saveOffer() {
 }
 
 onMounted(() => {
-  model.value = store.state.currentOffer.data;
+  if (route.params.id) model.value = store.state.currentOffer.data;
   axiosClient.get(`/tag`).then((res) => {
     allTags.value = res.data.tags.map((el) => el.name);
   });

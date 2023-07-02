@@ -20,7 +20,7 @@ const store = createStore({
       token: sessionStorage.getItem("TOKEN"),
     },
     currentCompany: { loading: false, data: {} },
-    currentOffer: { loading: false, data: {} },
+    currentOffer: { loading: false, data: null },
     offers: { loading: false, data: [], links: [] },
     companies: { loading: false, data: [], links: [] },
     userOffers: { loading: false, data: [] },

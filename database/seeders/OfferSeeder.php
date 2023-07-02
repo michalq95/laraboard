@@ -38,7 +38,7 @@ class OfferSeeder extends Seeder
 
         Offer::factory()->count(50)->create()->each(function ($offer) {
             $tagIds = Tag::inRandomOrder()->limit(3)->pluck('id')->toArray();
-            $offer->tags()->attach($tagIds);
+            $offer->tags()->sync($tagIds);
         });
     }
 }

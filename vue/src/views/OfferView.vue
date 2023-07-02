@@ -11,36 +11,6 @@
     <div>
       <div class="shadow sm:rounded-md sm:overflow-hidden">
         <div class="px-4 py-5 bg-white dark:bg-gray-800 space-y-6">
-          <div>
-            <label class="block text-sm font-medium text-gray-500">Image</label>
-            <div class="mt1 flex items-center">
-              <img
-                v-if="model.image"
-                :src="model.image"
-                :alt="model.title"
-                class="w-64 object-cover"
-              />
-              <span
-                v-else
-                class="flex items-center justify-center h-12 w-12 rounded-full overflow-hidden bg-gray-100"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-[80%] w-[80%] text-gray-500"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </span>
-            </div>
-          </div>
-          <!--/ Image -->
-
           <!-- Title -->
           <div>
             <label for="title" class="block text-sm font-medium text-gray-500"
@@ -72,26 +42,10 @@
             >
           </div>
           <div>
-            <label
-              for="bracket_low"
-              class="block text-sm font-medium text-gray-500"
-              >bracket_low</label
-            >
             <span
               class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              >{{ model.bracket_low }} {{ model.currency }}</span
-            >
-          </div>
-
-          <div>
-            <label
-              for="bracket_high"
-              class="block text-sm font-medium text-gray-500"
-              >bracket_high</label
-            >
-            <span
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              >{{ model.bracket_high }} {{ model.currency }}</span
+              >{{ model.bracket_low }}-{{ model.bracket_high }}
+              {{ model.currency }}</span
             >
           </div>
 

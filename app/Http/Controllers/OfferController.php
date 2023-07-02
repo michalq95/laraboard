@@ -34,13 +34,12 @@ class OfferController extends Controller
     public function public_index(Request $request)
     {
         $keywords = $request->input('keyword');
-        $keywords = explode(" ", $keywords);
-
         $query = Offer::with(["company", "tags"])
             ->where('status', 'active')
             ->orderBy('created_at', 'desc');
 
         if (!empty($keywords)) {
+            $keywords = explode(" ", $keywords);
             $query->where(function ($query) use ($keywords) {
                 foreach ($keywords as $keyword) {
                     $query->where('title', 'LIKE', "%$keyword%")
@@ -51,7 +50,6 @@ class OfferController extends Controller
             });
             $offers = $query->get();
         }
-        // $offers = $query->get();
         $offers = Cache::remember('offers', 60 * 60 * 24, function () use ($query) {
             return $query->get();
         });

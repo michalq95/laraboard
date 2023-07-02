@@ -21,18 +21,16 @@
       </div>
     </template>
     <div class="grid grid-cols-1 gap-4" v-if="offers.data.length > 0">
-      <div
-        v-for="offer in offers.data"
-        :key="offer.id"
-        class="flex justify-between items-center py-3 px-5 shadow-md bg-sky-300 hover:bg-sky-200 dark:bg-sky-950 dark:hover:bg-sky-800 h-[80px]"
-      >
-        <img :src="offer.image" alt="" class="w-8 object-cover" />
-        <h4>
+      <div v-for="offer in offers.data" :key="offer.id">
+        <OfferPanel :offer="offer"></OfferPanel>
+        <!-- <h4>
           <router-link :to="{ name: 'OfferView', params: { id: offer.id } }">{{
             offer.title
           }}</router-link>
         </h4>
-        <h5>{{ offer.bracket_low }}-{{ offer.bracket_high }}</h5>
+        <h5>
+          {{ offer.bracket_low }}-{{ offer.bracket_high }} {{ offer.currency }}
+        </h5>
         <div class="flex flex-col justify-between items-center">
           <router-link
             :to="{ name: 'OfferCreate', params: { id: offer.id } }"
@@ -46,8 +44,8 @@
             class="h-8 w-8 items-center text-red-700 bg-red-300 dark:text-red-300 dark:bg-red-700"
           >
             X
-          </button>
-        </div>
+          </button> 
+        </div>-->
       </div>
     </div>
 
@@ -100,12 +98,11 @@
         :key="app.id"
         class="flex justify-between items-center py-3 px-5 shadow-md bg-green-300 hover:bg-green-200 dark:bg-emerald-950 dark:hover:bg-emerald-800 h-[80px]"
       >
-        <h4></h4>
         <h4>
           <router-link
             :to="{ name: 'OfferView', params: { id: app.offer.id } }"
             class="cursor-pointer"
-            >Title: {{ app.offer.title }}</router-link
+            >{{ app.offer.title }}</router-link
           >
         </h4>
         <div>{{ app.application }}</div>
@@ -116,10 +113,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watchEffect, onMounted } from "vue";
+import { ref, computed, watchEffect, onMounted, watch } from "vue";
 import { getCompanyApplications } from "../service";
 import { useStore } from "vuex";
 import PageComponent from "../components/PageComponent.vue";
+import OfferPanel from "../components/OfferPanel.vue";
 const store = useStore();
 import axiosClient from "../axios";
 
@@ -162,11 +160,21 @@ onMounted(() => {
   }
 });
 
+// watch(
+//   () => store.state.companyApplications.data,
+//   (newVal, oldVal) => {
+//     companyApplications.value.data = {
+//       // ...JSON.parse(JSON.stringify(newVal)),
+//       ...newVal,
+//     };
+//   }
+// );
+
 function markAsRead(app) {
   axiosClient
     .put(`/application/${app.id}`, { ...app, status: 1 })
     .then((res) => {
-      const updatedApplication = res.data;
+      const updatedApplication = res.data.data;
       const index = companyApplications.value.data.findIndex(
         (application) => application.id === updatedApplication.id
       );

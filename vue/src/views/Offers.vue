@@ -13,6 +13,8 @@
     </template>
     <div v-if="offers.loading" class="flex justify-center">Loading...</div>
     <div v-else>
+      {{ offers.data[0] }}
+
       <div>
         <label for="search" class="block text-sm font-medium text-gray-500"
           >Search</label
@@ -45,46 +47,8 @@
         <Map v-if="showMap" :list="offers.data"></Map>
       </div>
       <div class="grid grid-cols-1 gap-4">
-        <div
-          v-for="offer in offers.data"
-          :key="offer.id"
-          class="flex justify-between items-center py-3 px-5 shadow-md bg-sky-300 hover:bg-sky-200 dark:bg-sky-950 dark:hover:bg-sky-800 h-[80px]"
-        >
-          <img :src="offer.image" alt="" class="w-8 object-cover" />
-          <h4>
-            <router-link
-              :to="{ name: 'OfferView', params: { id: offer.id } }"
-              >{{ offer.title }}</router-link
-            >
-          </h4>
-          <h5>
-            {{ offer.bracket_low }}-{{ offer.bracket_high }}
-            {{ offer.currency }}
-          </h5>
-          <div class="flex flex-col justify-between items-center">
-            <span v-for="tag in offer.tags">
-              {{ tag }}
-            </span>
-          </div>
-          <div
-            v-if="offer.company_id === userCompanyId"
-            class="flex flex-col justify-between items-center"
-          >
-            <router-link
-              :to="{ name: 'OfferCreate', params: { id: offer.id } }"
-              class="py-2 px-2 bg-sky-300 hover:bg-sky-200 dark:bg-sky-900 dark:hover:bg-sky-700 rounded-lg"
-              >Edit offer</router-link
-            >
-            <button
-              v-if="offer.id"
-              type="button"
-              @click="deleteOffer(offer)"
-              class="h-8 w-8 items-center text-red-700 bg-red-300"
-            >
-              X
-            </button>
-          </div>
-          <div v-else></div>
+        <div v-for="offer in offers.data" :key="offer.id">
+          <OfferPanel :offer="offer"></OfferPanel>
         </div>
       </div>
 
@@ -108,6 +72,7 @@
 <script setup>
 import PageComponent from "../components/PageComponent.vue";
 import Map from "../components/Map.vue";
+import OfferPanel from "../components/OfferPanel.vue";
 
 import store from "../store";
 import { computed, ref } from "vue";
