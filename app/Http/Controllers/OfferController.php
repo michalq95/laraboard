@@ -49,11 +49,11 @@ class OfferController extends Controller
                 }
             });
             $offers = $query->get();
+        } else {
+            $offers = Cache::remember('offers', 60 * 60 * 24, function () use ($query) {
+                return $query->get();
+            });
         }
-        $offers = Cache::remember('offers', 60 * 60 * 24, function () use ($query) {
-            return $query->get();
-        });
-
         return OfferResource::collection($offers);
     }
 

@@ -12,6 +12,7 @@
         >
       </div>
     </template>
+    {{ companies[0] }}
     <div class="grid grid-cols-1 gap-4">
       <div
         v-for="company in companies"

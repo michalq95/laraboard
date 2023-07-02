@@ -36,14 +36,15 @@ class OfferProvider extends ServiceProvider
 
         Offer::created((function ($offer) {
 
-
-            $tags = explode(',', request()->input('tags'));
-            $tagIds = [];
-            foreach ($tags as $tagName) {
-                $tag = Tag::firstOrCreate(['name' => trim($tagName)]);
-                $tagIds[] = $tag->id;
+            if (request()->input('tags')) {
+                $tags = explode(',', request()->input('tags'));
+                $tagIds = [];
+                foreach ($tags as $tagName) {
+                    $tag = Tag::firstOrCreate(['name' => trim($tagName)]);
+                    $tagIds[] = $tag->id;
+                }
+                $offer->tags()->sync($tagIds);
             }
-            $offer->tags()->sync($tagIds);
         }));
 
         Offer::updating(function ($offer) {
