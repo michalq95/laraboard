@@ -84,7 +84,7 @@ const routes = [
       if (res.data.data.company_id == store.state.user.data.company.id) {
         next();
       } else {
-        next({ name: "OfferView", params: { id: to.params.id } });
+        next({ name: "OfferView", params: { id: to.params.slug } });
       }
     },
   },

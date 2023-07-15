@@ -13,9 +13,10 @@
     <div class="flex flex-col flex-grow p-2">
       <div class="flex justify-between">
         <h4>
-          <router-link :to="{ name: 'OfferView', params: { id: offer.id } }">{{
-            offer.title
-          }}</router-link>
+          <router-link
+            :to="{ name: 'OfferView', params: { id: offer.slug } }"
+            >{{ offer.title }}</router-link
+          >
         </h4>
 
         <h5 class="items-end">
@@ -27,7 +28,7 @@
       <div class="flex justify-between">
         <h4>
           <router-link
-            :to="{ name: 'CompanyView', params: { id: offer.company.id } }"
+            :to="{ name: 'CompanyView', params: { id: offer.company.slug } }"
           >
             {{ offer.company.name }}
           </router-link>
@@ -44,7 +45,7 @@
       class="flex flex-col justify-between items-center"
     >
       <router-link
-        :to="{ name: 'OfferCreate', params: { id: offer.id } }"
+        :to="{ name: 'OfferCreate', params: { id: offer.slug } }"
         class="py-2 px-2 bg-sky-300 hover:bg-sky-200 dark:bg-sky-900 dark:hover:bg-sky-700 rounded-lg"
         >Edit offer</router-link
       >

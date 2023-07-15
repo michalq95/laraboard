@@ -52,10 +52,6 @@ class CompanyController extends Controller
      */
     public function show(Company $company, Request $request)
     {
-        // $user = $request->user();
-        // if ($user->id !== $company->user_id) {
-        //     return abort(403, "Unauthorized");
-        // }
         return new CompanyResource($company);
     }
 

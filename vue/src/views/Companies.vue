@@ -12,7 +12,7 @@
         >
       </div>
     </template>
-    {{ companies[0] }}
+
     <div class="grid grid-cols-1 gap-4">
       <div
         v-for="company in companies"
@@ -22,7 +22,7 @@
         <img :src="company.image_url" alt="" class="w-8 object-cover" />
         <h4>
           <router-link
-            :to="{ name: 'CompanyView', params: { id: company.id } }"
+            :to="{ name: 'CompanyView', params: { id: company.slug } }"
           >
             {{ company.name }}</router-link
           >

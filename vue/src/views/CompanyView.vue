@@ -12,7 +12,6 @@
     <div v-else class="shadow sm:rounded-md sm:overflow-hidden">
       <div class="px-4 py-5 bg-white dark:bg-gray-800 space-y-6">
         <div>
-          <label class="block text-sm font-medium text-gray-500">Image</label>
           <div class="mt1 flex items-center">
             <img
               v-if="model.image_url"
@@ -48,12 +47,7 @@
           >
           {{ model.name }}
         </div>
-        <div>
-          <label for="status" class="block text-sm font-medium text-gray-500"
-            >Status</label
-          >
-          {{ model.status }}
-        </div>
+
         <div>
           <label
             for="description"
@@ -72,12 +66,10 @@
 
           {{ model.address }}
         </div>
-        <div class="flex items-start">
-          <div class="flex items-center h-5">
-            {{ model.status }}
-          </div>
-          <div class="ml-3 text-sm">
-            <label for="status" class="font-medium text-gray-500">Active</label>
+
+        <div class="grid grid-cols-1 gap-4" v-if="offers">
+          <div v-for="offer in offers" :key="offer.id">
+            <OfferPanel :offer="{ ...offer, company: model }"></OfferPanel>
           </div>
         </div>
 
@@ -86,6 +78,7 @@
         ></div> -->
       </div>
     </div>
+    {{ offers[0] }}
   </PageComponent>
 </template>
 <script setup>
@@ -93,6 +86,9 @@ import { ref, computed, watch } from "vue";
 import store from "../store";
 import { useRoute } from "vue-router";
 import PageComponent from "../components/PageComponent.vue";
+import OfferPanel from "../components/OfferPanel.vue";
+import { onMounted } from "vue";
+import axiosClient from "../axios";
 
 const route = useRoute();
 let model = ref({
@@ -101,11 +97,12 @@ let model = ref({
   description: null,
   // image: "",
   image_url: "",
-  offers: [],
+  // offers: [],
   address: "",
   loc_x: null,
   loc_y: null,
 });
+let offers = ref([]);
 
 const companyLoading = computed(() => store.state.currentCompany.loading);
 
@@ -123,5 +120,11 @@ watch(
 if (route.params.id) {
   store.dispatch("getCompany", route.params.id);
 }
+onMounted(() => {
+  axiosClient.get(`company/${route.params.id}/offer`).then((res) => {
+    console.log(res.data.data);
+    offers.value = res.data.data;
+  });
+});
 </script>
 <style lang=""></style>

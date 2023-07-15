@@ -65,7 +65,7 @@
             <div class="flex flex-wrap">
               <span
                 v-for="tag in model.tags"
-                class="text-center text-gray-600 p-5"
+                class="text-center text-gray-600 dark:text-gray-200 p-5"
               >
                 {{ tag }}
               </span>
@@ -73,7 +73,6 @@
           </div>
         </div>
       </div>
-      Apply
       <Apply v-if="store.state?.user.token" :offer="model"></Apply>
     </div>
   </PageComponent>

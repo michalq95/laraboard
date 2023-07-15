@@ -59,9 +59,15 @@ class OfferController extends Controller
 
     public function getCompanyOffers($companyId)
     {
-        // $offers = Offer::where('company_id', $companyId)->paginate(25);
-        // return OfferResource::collection($offers);
-        $offers = Company::find($companyId)->offers()->paginate(25);
+        if (auth('sanctum')?->user()?->company->id == $companyId) {
+            $offers = Offer::with(['company', 'tags'])->where('company_id', $companyId)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            $offers = Offer::with(['company', 'tags'])->where('company_id', $companyId)
+                ->where('status', 'active')->orderBy('created_at', 'desc')
+                ->get();
+        }
         return OfferResource::collection($offers);
     }
 
@@ -94,6 +100,18 @@ class OfferController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, Offer $offer)
+    {
+
+        $application = null;
+        if (auth('sanctum')->user()) {
+            $application = $offer->getApplicationForUser(auth('sanctum')->user()->id);
+        }
+        return (new OfferResource($offer))->additional([
+            'application' => $application ? new ApplicationResource($application) : null,
+        ]);
+    }
+
+    public function showBySlug(Request $request, Offer $offer)
     {
 
         $application = null;

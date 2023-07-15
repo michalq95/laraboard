@@ -13,8 +13,6 @@
     </template>
     <div v-if="offers.loading" class="flex justify-center">Loading...</div>
     <div v-else>
-      {{ offers.data[0] }}
-
       <div>
         <label for="search" class="block text-sm font-medium text-gray-500"
           >Search</label

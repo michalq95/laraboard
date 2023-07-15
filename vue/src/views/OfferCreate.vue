@@ -284,8 +284,7 @@ function saveOffer() {
     .dispatch("saveOffer", { ...model.value, tags: model.value.tags.join() })
     .then((data) => {
       router.push({
-        name: "OfferCreate",
-        params: { id: data.data.id },
+        name: "Dashboard",
       });
     });
 }

@@ -35,7 +35,8 @@ class OfferResource extends JsonResource
             'currency' => $this->currency,
             'icon' => $this->icon,
             'tags' => $this->tags->pluck('name'),
-            'company' => new CompanyResource($this->company)
+            'company' => new CompanyResource($this->whenLoaded('company'))
+            // 'company' => $this->company
 
         ];
     }
