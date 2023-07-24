@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class, "user_id");
             $table->string("name", 255);
-            $table->string("slug", 255);
+            $table->string("slug", 255)->index("companies_slug_index");
             $table->string("status", 10);
             $table->string("email")->unique();
             $table->text("description", 2000)->nullable();

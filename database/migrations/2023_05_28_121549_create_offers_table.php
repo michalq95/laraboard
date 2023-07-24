@@ -18,9 +18,9 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->string("title", 255);
-            $table->string("slug", 255);
+            $table->string("slug", 255)->index("offers_slug_index");
             $table->text("description", 2000);
-            $table->string("status");
+            $table->string("status")->index("offers_status_index");
             $table->integer("bracket_low")->nullable();
             $table->integer("bracket_high")->nullable();
             $table->timestamp('expire_date')->nullable();

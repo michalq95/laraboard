@@ -27,6 +27,7 @@ const store = createStore({
     companyApplications: { data: [] },
     myApplications: { data: [] },
     tags: [...tmpTags],
+    error: false,
   },
   getters: {
     isMod(state) {
@@ -165,6 +166,9 @@ const store = createStore({
     },
   },
   mutations: {
+    setError: (state, value) => {
+      state.error = value;
+    },
     logout: (state) => {
       state.user.data = {};
       state.user.token = null;

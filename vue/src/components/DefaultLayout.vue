@@ -165,8 +165,8 @@
         </div>
       </DisclosurePanel>
     </Disclosure>
-
-    <router-view></router-view>
+    <div v-if="$store.state.error">404 not found</div>
+    <router-view v-else></router-view>
   </div>
 </template>
 

@@ -26,7 +26,6 @@ class OfferFactory extends Factory
 
         return [
             'title' => $this->faker->sentence,
-            // 'slug' => $this->faker->slug,
             'description' => $this->faker->realText,
             'status' => 'active',
             'bracket_low' => $this->faker->numberBetween(3000, 5000),

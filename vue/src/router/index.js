@@ -10,6 +10,7 @@ import OfferCreate from "../views/OfferCreate.vue";
 import Companies from "../views/Companies.vue";
 import CompanyCreate from "../views/CompanyCreate.vue";
 import CompanyView from "../views/CompanyView.vue";
+import NotFound from "../views/NotFound.vue";
 
 import store from "../store";
 import DefaultLayout from "../components/DefaultLayout.vue";
@@ -104,6 +105,8 @@ const routes = [
     name: "CompanyView",
     component: CompanyView,
   },
+  { path: "/404", name: "NotFound", component: NotFound },
+  { path: "/:pathMatch(.*)*", redirect: { name: "NotFound" } },
   // ],
   //   },
 ];
@@ -114,6 +117,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.name != "NotFound") store.commit("setError", false);
   if (to.meta.requiresAuth && !store.state.user.token) {
     next({ name: "Login" });
   } else if (store.state.user.token && to.meta.isGuest) {

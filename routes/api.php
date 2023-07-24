@@ -41,8 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::resource("/offer", OfferController::class)->except(['index', "show"]);;
-    Route::resource("/company", CompanyController::class)->except(['index']);;
-    Route::get('/company/{company:slug}', [CompanyController::class, 'show']);
     Route::post("/logout", [AuthController::class, 'logout']);
     Route::get("/application/company", [ApplicationController::class, 'companyApplications']);
     Route::get("/application/application", [ApplicationController::class, 'myApplications']);
@@ -53,6 +51,8 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('guard')->group(function () {
     Route::resource("/offer", OfferController::class)->only(['index']);
     Route::get('/offer/{offer:slug}', [OfferController::class, 'showBySlug']);
+    Route::resource("/company", CompanyController::class)->except(['index']);;
+    Route::get('/company/{company:slug}', [CompanyController::class, 'show']);
 });
 
 Route::post("/register", [AuthController::class, 'register']);

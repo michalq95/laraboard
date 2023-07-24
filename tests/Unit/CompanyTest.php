@@ -10,6 +10,9 @@ use Tests\TestCase;
 class CompanyTest extends TestCase
 {
     use RefreshDatabase;
+
+
+
     public function testCompanyCanBeCreated()
     {
         $user = User::factory()->create();
