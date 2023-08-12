@@ -83,7 +83,7 @@ export default defineComponent({
                     ? `${el.bracket_low}-${el.bracket_high} ${el.currency}<br>`
                     : ``) +
                   // `<a href="/offers/${el.id}"target="_self" onclick="event.preventDefault() Vue.router.push('/offers/${el.id}')">Learn more</a>`
-                  `<div target="_self" style="cursor:pointer; color:blue;"  onclick="event.preventDefault(); Vue.router.push('/offers/${el.id}')">Learn more</div>`
+                  `<div target="_self" style="cursor:pointer; color:blue;"  onclick="event.preventDefault(); Vue.router.push('/offers/${el.slug}')">Learn more</div>`
               );
               markerNumber++;
               markers.addLayer(m);

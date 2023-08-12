@@ -19,6 +19,7 @@ class StoreCompanyRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        // dd($this->user());
         $this->merge(['user_id' => $this->user()->id]);
     }
 

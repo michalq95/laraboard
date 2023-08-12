@@ -109,6 +109,11 @@ const companyLoading = computed(() => store.state.currentCompany.loading);
 watch(
   () => store.state.currentCompany.data,
   (newVal, oldVal) => {
+    console.log(newVal.id);
+    axiosClient.get(`company/${newVal.id}/offer`).then((res) => {
+      console.log(res);
+      offers.value = res.data.data;
+    });
     model.value = {
       // ...JSON.parse(JSON.stringify(newVal)),
       ...newVal,
@@ -120,11 +125,11 @@ watch(
 if (route.params.id) {
   store.dispatch("getCompany", route.params.id);
 }
-onMounted(() => {
-  axiosClient.get(`company/${route.params.id}/offer`).then((res) => {
-    console.log(res.data.data);
-    offers.value = res.data.data;
-  });
-});
+// onMounted(() => {
+//   axiosClient.get(`company/${route.params.id}/offer`).then((res) => {
+//     console.log(res);
+//     offers.value = res.data.data;
+//   });
+// });
 </script>
 <style lang=""></style>

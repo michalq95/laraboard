@@ -309,7 +309,7 @@ function deleteOffer() {
 let availableTags = computed(() => {
   return allTags.value
     .filter((el) => !model.value.tags.includes(el))
-    .filter((el) => el.includes(filterText.value));
+    .filter((el) => el.toLowerCase().includes(filterText.value.toLowerCase()));
 });
 
 // watch(
