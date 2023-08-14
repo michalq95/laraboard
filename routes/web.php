@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\Chat;
+use App\Events\Hello;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/broadcast', function () {
+    // return view('welcome');
+    Chat::dispatch("Hello");
+    return "sent";
 });

@@ -1,11 +1,14 @@
 <script setup>
 import HelloWorld from "./components/HelloWorld.vue";
 import DefaultLayout from "./components/DefaultLayout.vue";
+import Chat from "./components/Chat.vue";
+import store from "./store";
 </script>
 
 <template>
   <!-- <router-view></router-view> -->
   <DefaultLayout></DefaultLayout>
+  <Chat v-if="store.state.user.token"></Chat>
 </template>
 
 <style scoped>
