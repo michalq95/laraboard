@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\TagController;
@@ -46,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("/application/application", [ApplicationController::class, 'myApplications']);
     Route::get("/application/{application}/resume", [ApplicationController::class, 'getPdf']);
     Route::resource("/application", ApplicationController::class);
+    Route::post("/chat", [ChatController::class, 'send']);
 });
 
 Route::middleware('guard')->group(function () {

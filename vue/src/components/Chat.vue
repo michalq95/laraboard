@@ -32,6 +32,7 @@
 import { ref, onMounted } from "vue";
 import Echo from "laravel-echo";
 import store from "../store";
+import axiosClient from "../axios";
 
 const echo = new Echo({
   broadcaster: "pusher",
@@ -70,20 +71,19 @@ onMounted(() => {
 });
 
 function onSubmit() {
-  chatMessages.value.push({ message: input.value });
-  input.value = "";
+  let trimmed = input.value.trim();
+  if (trimmed) {
+    // model.value.tags.push(filterText.value);
+    chatMessages.value.push({ message: input.value });
+    axiosClient.post("/chat", { message: input.value });
+    input.value = "";
+  }
 }
 
 const input = ref("");
 const showChat = ref(false);
 const chatMessages = ref([
-  { incoming: true, message: "Welcome to the chat" },
-  { incoming: false, message: "Welcome to the chat" },
-  {
-    incoming: true,
-    message:
-      "Welcome to the chatWelcome to the chatWelcome to the chatWelcome to the chatWelcome to the chat",
-  },
+  { incoming: true, message: "Ask question to our AI model" },
 ]);
 </script>
 
