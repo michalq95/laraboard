@@ -19,13 +19,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/broadcast', function () {
-    // return view('welcome');
-    Chat::dispatch("Hello");
-    return "sent";
-});
-Route::get('/broadcastprivate', function () {
-    // ChatPrivateEvent::dispatch("Hello");
-    event(new ChatPrivateEvent(1, "Hello Privately"));
-    return "sent privately";
-});

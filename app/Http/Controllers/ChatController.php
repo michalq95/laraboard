@@ -16,10 +16,6 @@ class ChatController extends Controller
 
     public function send(Request $request)
     {
-        dump($request);
-        $message = $request->get('message');
-
-
         event(
             new ChatPrivateEvent(
                 auth()->user()->id,

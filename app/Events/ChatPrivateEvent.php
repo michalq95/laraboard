@@ -20,7 +20,6 @@ class ChatPrivateEvent implements ShouldBroadcast
 
     public function __construct($userId, $message)
     {
-        dump($userId);
         $this->userId = $userId;
         $this->message = $message;
     }

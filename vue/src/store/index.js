@@ -118,7 +118,6 @@ const store = createStore({
       return axiosClient
         .get("/offer/offers", { params: { keyword: keywords } })
         .then((res) => {
-          console.log(res);
           commit("setOffersLoading", false);
           commit("setOffers", res.data);
           return res;
@@ -152,7 +151,6 @@ const store = createStore({
     },
     login({ commit }, user) {
       return axiosClient.post("/login", user).then(({ data }) => {
-        console.log(data);
         commit("setUser", data);
         return data;
       });

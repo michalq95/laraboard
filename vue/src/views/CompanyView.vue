@@ -109,9 +109,7 @@ const companyLoading = computed(() => store.state.currentCompany.loading);
 watch(
   () => store.state.currentCompany.data,
   (newVal, oldVal) => {
-    console.log(newVal.id);
     axiosClient.get(`company/${newVal.id}/offer`).then((res) => {
-      console.log(res);
       offers.value = res.data.data;
     });
     model.value = {
