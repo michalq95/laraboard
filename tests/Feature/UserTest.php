@@ -1,22 +1,15 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function test_user_factory()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $user = User::factory()->count(1)->make();
+        $this->assertNotEmpty($user);
     }
 }

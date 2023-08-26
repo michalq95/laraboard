@@ -78,7 +78,6 @@
         ></div> -->
       </div>
     </div>
-    {{ offers[0] }}
   </PageComponent>
 </template>
 <script setup>

@@ -59,7 +59,7 @@ class OfferController extends Controller
 
     public function getCompanyOffers($companyId)
     {
-        if (auth('sanctum')?->user()?->company->id == $companyId) {
+        if (auth('sanctum')?->user()?->company?->id == $companyId) {
             $offers = Offer::with(['company', 'tags'])->where('company_id', $companyId)
                 ->orderBy('created_at', 'desc')
                 ->get();
